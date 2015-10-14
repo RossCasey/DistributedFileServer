@@ -20,11 +20,9 @@ object EchoClient {
     //get user input from console
     val input = readLine("prompt>")
 
-    //make user input URL safe
-    val urlSafeInput = URLEncoder.encode(input, "UTF-8")
 
     //send request to server
-    toServer.print("GET /echo.php?message=" + urlSafeInput + " HTTP/1.0\r\n\r\n")
+    toServer.println(input)
     toServer.flush()
 
     //print response to console
