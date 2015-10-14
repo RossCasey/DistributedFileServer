@@ -21,7 +21,7 @@ object EchoServer {
       println("Listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {
-        println(e.getMessage)
+        println("SERVER ERROR: " + e.getClass + ": " + e.getMessage)
         System.exit(0)
       }
     }
