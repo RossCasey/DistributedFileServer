@@ -3,8 +3,6 @@
  *  Ross Casey - ***REMOVED***
  */
 
-import scala.io._
-import java.io._
 import java.net._
 import java.util.concurrent.Executors
 
@@ -13,10 +11,10 @@ object EchoServer {
   var serverSocket: ServerSocket = null
 
   def main(args: Array[String]) {
-    serverSocket = new ServerSocket(8000)
-    val threadPool = Executors.newFixedThreadPool(2)
-
-    println("Listening on port 8000:")
+    val portNumber = args(0)
+    serverSocket = new ServerSocket(Integer.parseInt(portNumber))
+    val threadPool = Executors.newFixedThreadPool(4)
+    println("Listening on port " + portNumber + ": ")
 
     var exit = false
     while(!exit) {
@@ -26,7 +24,7 @@ object EchoServer {
         val serverThread = new ServerThread(s, killServer)
         threadPool.execute(serverThread)
       } catch {
-        case Exception => {
+        case e: Exception => {
           exit = true
           println("Killing server...")
         }
