@@ -4,17 +4,28 @@
  */
 
 import java.net._
-import java.util.concurrent.Executors
+import java.util.concurrent.{ExecutorService, Executors}
 
 object EchoServer {
 
   var serverSocket: ServerSocket = null
+  var threadPool: ExecutorService = null
 
   def main(args: Array[String]) {
-    val portNumber = args(0)
-    serverSocket = new ServerSocket(Integer.parseInt(portNumber))
-    val threadPool = Executors.newFixedThreadPool(4)
-    println("Listening on port " + portNumber + ": ")
+
+    //attempt to create a server socket, exit otherwise
+    try {
+      val portNumber = Integer.parseInt(args(0))
+      serverSocket = new ServerSocket(portNumber)
+      threadPool = Executors.newFixedThreadPool(4)
+      println("Listening on port " + portNumber + ": ")
+    } catch {
+      case e: Exception => {
+        println(e.getMessage)
+        System.exit(0)
+      }
+    }
+
 
     var exit = false
     while(!exit) {
@@ -26,6 +37,7 @@ object EchoServer {
       } catch {
         case e: Exception => {
           exit = true
+          threadPool.shutdown()
           println("Killing server...")
         }
       }
@@ -33,6 +45,10 @@ object EchoServer {
     System.exit(0)
   }
 
+
+  /**
+   * Callback to allow threads to kill the server
+   */
   def killServer(): Unit = {
     serverSocket.close()
   }
