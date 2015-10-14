@@ -1,6 +1,6 @@
 /**
  *  Echo Server Lab
- *  Ross Casey - ***REMOVED***
+ *  Ross Casey - 12301716
  */
 
 import java.io._
@@ -97,7 +97,7 @@ class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runna
   private def handleHeloMessage(input: String): Unit = {
     val ip = socket.getInetAddress.toString.substring(1)
     val port = socket.getPort.toString
-    val id = "***REMOVED***"
+    val id = "12301716"
     val output = input + "\nIP:" + ip + "\nPort:" + port + "\nStudentID:" + id +"\n"
     sendToClient(output)
   }
