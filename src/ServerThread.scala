@@ -7,7 +7,7 @@ import java.io._
 import scala.io._
 import java.net._
 
-class ServerThread(socket: Socket) extends Thread {
+class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runnable {
 
   override def run() {
     val in = new BufferedSource(socket.getInputStream()).getLines()
