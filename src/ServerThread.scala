@@ -18,12 +18,10 @@ class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runna
 
     val message = in.next()
 
-    //I love scala
-    message match {
-      case isKillService => handleKillServer()
-      case isHeloMessage => handleHeloMessage(message)
-      case _             => handleDefault(message)
-    }
+    if (isKillService(message)) handleKillServer()
+    else if (isHeloMessage(message)) handleHeloMessage(message)
+    else handleDefault(message)
+
     socket.close()
   }
 
