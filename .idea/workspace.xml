@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf073124-dc05-449e-90f2-a639072ddd0a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/EchoServer.scala" afterPath="$PROJECT_DIR$/src/EchoServer.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ServerThread.scala" afterPath="$PROJECT_DIR$/src/ServerThread.scala" />
     </list>
     <ignored path="Echo Server.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,11 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EchoServer.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EchoServer.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/EchoServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43165466">
-              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
               <folding>
                 <element signature="e#55#72#0" expanded="true" />
               </folding>
@@ -47,12 +47,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerThread.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ServerThread.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ServerThread.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-              <folding />
+            <state vertical-scroll-proportion="1.0">
+              <caret line="55" column="49" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
+              <folding>
+                <element signature="e#573#703#0" expanded="false" />
+                <element signature="e#707#768#0" expanded="false" />
+                <element signature="e#772#900#0" expanded="false" />
+                <element signature="e#904#1134#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -71,8 +76,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/EchoClient.scala" />
-        <option value="$PROJECT_DIR$/src/ServerThread.scala" />
         <option value="$PROJECT_DIR$/src/EchoServer.scala" />
+        <option value="$PROJECT_DIR$/src/ServerThread.scala" />
       </list>
     </option>
   </component>
@@ -520,12 +525,12 @@
       <workItem from="1444763320492" duration="574000" />
       <workItem from="1444815210969" duration="53000" />
       <workItem from="1444815289427" duration="102000" />
-      <workItem from="1444815447619" duration="838000" />
+      <workItem from="1444815447619" duration="1829000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2649000" />
+    <option name="totallyTimeSpent" value="3640000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="18" y="23" width="1260" height="733" extended-state="0" />
@@ -599,7 +604,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -625,7 +635,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -651,7 +666,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -677,7 +697,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -703,15 +728,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerThread.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -725,10 +747,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/EchoServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43165466">
-          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
           <folding>
             <element signature="e#55#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerThread.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0">
+          <caret line="55" column="49" selection-start-line="55" selection-start-column="49" selection-end-line="55" selection-end-column="49" />
+          <folding>
+            <element signature="e#573#703#0" expanded="false" />
+            <element signature="e#707#768#0" expanded="false" />
+            <element signature="e#772#900#0" expanded="false" />
+            <element signature="e#904#1134#0" expanded="false" />
           </folding>
         </state>
       </provider>
