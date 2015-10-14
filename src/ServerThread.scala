@@ -9,32 +9,31 @@ import java.net._
 
 class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runnable {
 
+  var in: Iterator[String] = null
+  var out: PrintStream = null
+
   override def run() {
-    val in = new BufferedSource(socket.getInputStream()).getLines()
-    val out = new PrintStream(socket.getOutputStream())
+    in = new BufferedSource(socket.getInputStream()).getLines()
+    out = new PrintStream(socket.getOutputStream())
 
-    val inMessage = in.next()
-    inMessage match {
-      case "KILL_SERVER" => {
+    val message = in.next()
 
-      }
-
-      case ""
+    //I love scala
+    message match {
+      case isKillService => handleKillServer()
+      case isHeloMessage => handleHeloMessage(message)
+      case _             => handleDefault(message)
     }
-
-
-
-    val inMessage = in.next()
-    out.println(inMessage.toUpperCase)
-    out.flush()
     socket.close()
+  }
 
-
-
+  def sendToClient(toSend: String): Unit = {
+    out.print(toSend)
+    out.flush()
   }
 
   def isKillService(input: String): Boolean = {
-    if (input.equals("KILL_SERVER")) {
+    if (input.equals("KILL_SERVICE")) {
       true
     } else {
       false
@@ -53,10 +52,15 @@ class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runna
     }
   }
 
-  def handleHeloMessage(input: String): String = {
+  def handleHeloMessage(input: String): Unit = {
     val ip = socket.getInetAddress.toString
     val port = socket.getPort.toString
     val id = "***REMOVED***"
-    input + "IP:" + ip + "\nPort:" + port + "\nStudentID:" + id + "\n"
+    val output = input + "IP:" + ip + "\nPort:" + port + "\nStudentID:" + id +"\n"
+    sendToClient(output)
+  }
+
+  def handleDefault(input: String): Unit = {
+    //do nothing for now
   }
 }

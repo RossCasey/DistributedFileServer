@@ -30,6 +30,7 @@ object EchoServer {
         }
       }
     }
+    System.exit(0)
   }
 
   def killServer(): Unit = {
