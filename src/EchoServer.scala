@@ -10,7 +10,7 @@ object EchoServer {
 
   var serverSocket: ServerSocket = null
   var threadPool: ExecutorService = null
-  var portNumber: Int = null
+  var portNumber: Int = Integer2int(null)
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
