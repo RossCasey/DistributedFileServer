@@ -13,7 +13,7 @@ object EchoClient {
   def main(args: Array[String]) {
 
     //create socket, buffered input/output streams
-    lazy val socket = new Socket(InetAddress.getByName("0.0.0.0"),8000)
+    lazy val socket = new Socket(InetAddress.getByName("178.62.123.87"),8000)
     lazy val fromServer = new BufferedSource(socket.getInputStream).getLines()
     lazy val toServer = new PrintStream(socket.getOutputStream)
 
