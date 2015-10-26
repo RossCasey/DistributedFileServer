@@ -10,12 +10,12 @@ object EchoServer {
 
   var serverSocket: ServerSocket = null
   var threadPool: ExecutorService = null
+  var portNumber: Int = null
 
   def main(args: Array[String]) {
-
     //attempt to create a server socket, exit otherwise
     try {
-      val portNumber = Integer.parseInt(args(0))
+      portNumber = Integer.parseInt(args(0))
       serverSocket = new ServerSocket(portNumber)
       threadPool = Executors.newFixedThreadPool(4)
       println("Listening on port " + portNumber + ": ")
@@ -32,7 +32,7 @@ object EchoServer {
       try {
         val s = serverSocket.accept()
         println("Connection accepted")
-        val serverThread = new ServerThread(s, killServer)
+        val serverThread = new ServerThread(s, killServer, portNumber)
         threadPool.execute(serverThread)
       } catch {
         case e: Exception => {
