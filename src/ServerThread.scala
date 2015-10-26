@@ -96,7 +96,7 @@ class ServerThread(socket: Socket, killServerCallback: () => Unit) extends Runna
    */
   private def handleHeloMessage(input: String): Unit = {
     val ip = socket.getLocalAddress.toString.substring(1)
-    val port = socket.getPort.toString
+    val port = 443
     val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
     val output = input + "\nIP:" + ip + "\nPort:" + port + "\nStudentID:" + id +"\n"
     sendToClient(output)
