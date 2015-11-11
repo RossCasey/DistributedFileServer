@@ -69,4 +69,8 @@ class User() {
   def getName: String = {
     name
   }
+
+  def getSocket: Socket = {
+    socket
+  }
 }

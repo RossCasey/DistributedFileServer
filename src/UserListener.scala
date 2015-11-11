@@ -23,7 +23,7 @@ class UserListenerImplementation(serverUtility: ChatServerUtility) extends UserL
     while(true) {
       for(user <- users) {
         if(user.hasMessage) {
-          serverUtility.execute(new MessageHandler(user,chatRoomHandler))
+          serverUtility.execute(new MessageHandler(user,chatRoomHandler, serverUtility))
         }
       }
       Thread.sleep(20)
@@ -40,7 +40,7 @@ class UserListenerImplementation(serverUtility: ChatServerUtility) extends UserL
   def addUser(socket: Socket): Unit = {
     val newUser = new User(this, computeNextId(), socket)
     users += newUser
-    serverUtility.execute(new MessageHandler(newUser, chatRoomHandler))
+    serverUtility.execute(new MessageHandler(newUser, chatRoomHandler, serverUtility))
   }
 
 

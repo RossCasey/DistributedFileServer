@@ -1,11 +1,11 @@
 /**
  * Created by Ross on 10/11/15.
  */
-class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler) extends Runnable {
+class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility: ChatServerUtility) extends Runnable {
 
   object MessageType extends Enumeration {
     type MessageType = Value
-    val Join, Leave, Disconnect, Chat, Error = Value
+    val Join, Leave, Disconnect, Chat, Error, Helo, Kill = Value
   }
 
 
@@ -28,7 +28,16 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler) extends Runna
     if(firstLine.startsWith("LEAVE_CHATROOM")) return MessageType.Leave
     if(firstLine.startsWith("DISCONNECT")) return MessageType.Disconnect
     if(firstLine.startsWith("CHAT")) return MessageType.Chat
+    if(firstLine.startsWith("HELO")) return MessageType.Helo
+    if(firstLine.startsWith("KILL_SERVICE")) return MessageType.Kill
     MessageType.Error
+  }
+
+
+  def handleHeloMessage(firstLine: String): Unit = {
+    val ip = user.getSocket.getLocalAddress.toString.substring(1)
+    val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
+    user.sendMessage(new HeloReplyMessage(firstLine, ip, serverUtility.getPort, id))
   }
 
   def handleJoinMessage(firstLine: String): Unit = {
@@ -61,6 +70,10 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler) extends Runna
         user.sendError(ErrorList.malformedPacket)
       }
     }
+  }
+
+  def handleKillMessage(): Unit = {
+    serverUtility.killServer
   }
 
   def handleDisconnectMessage(firstLine: String): Unit = {

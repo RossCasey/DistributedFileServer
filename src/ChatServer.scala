@@ -9,6 +9,7 @@ trait ChatServerUtility {
   def getIP: String
   def getPort: String
   def execute(x: Runnable): Unit
+  def killServer: Unit
 }
 
 
@@ -67,5 +68,9 @@ object ChatServer extends ChatServerUtility {
 
   def execute(job: Runnable): Unit = {
     threadPool.execute(job)
+  }
+
+  def killServer: Unit = {
+    serverSocket.close()
   }
 }
