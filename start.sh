@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd out
-scala EchoServer $1
+scala ChatServer $1
