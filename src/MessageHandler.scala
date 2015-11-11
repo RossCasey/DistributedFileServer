@@ -85,7 +85,7 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
       if(username != user.getName) {
         user.sendError(ErrorList.usernameMismatch)
       } else {
-        user.closeConnection()
+        user.requestConnectionClose()
       }
     } catch {
       case e: Exception => {

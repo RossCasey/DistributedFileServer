@@ -54,6 +54,9 @@ class User() {
     if(!socket.isClosed) {
       socket.close()
     }
+  }
+
+  def requestConnectionClose(): Unit = {
     userListener.removeUser(this)
   }
 
