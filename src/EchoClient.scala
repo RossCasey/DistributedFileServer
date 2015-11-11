@@ -5,7 +5,6 @@
 
 import java.net._
 import java.io._
-import scala.io.StdIn.readLine
 import scala.io._
 
 object EchoClient {
