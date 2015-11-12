@@ -5,7 +5,7 @@ import scala.collection.mutable.ListBuffer
  */
 class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
 
-  val users: ListBuffer[User] = null
+  val users: ListBuffer[User] = ListBuffer()
 
   def addUser(user: User): Unit = {
     if(isUserInGroup(user)) {
@@ -13,6 +13,7 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
     } else {
       users += user
       user.sendMessage(createJoinMessage(user))
+      sendMessage(user, user.getName + " has joined this chatroom.\n")
     }
   }
 
@@ -21,6 +22,7 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
       user.sendError(ErrorList.userNotInChatRoom)
     } else {
       user.sendMessage(createLeavingMessage(user))
+      sendMessage(user, user.getName + " has left this chatroom.\n")
       removeUser(user)
     }
   }
@@ -53,6 +55,7 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
 
   def sendMessage(user: User, message: String):Unit = {
     val chatMessage = createChatMessage(user, message)
+    println("GOT HERE IN SEND MESSAGE IN CHATROOM")
     for(user <- users) {
       user.sendMessage(chatMessage)
     }
@@ -84,6 +87,4 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
   def createLeavingMessage(user: User): LeaveReplyMessage = {
     new LeaveReplyMessage(this.id, user.getId)
   }
-
-
 }

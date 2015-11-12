@@ -1,15 +1,15 @@
 /**
  * Created by Ross on 10/11/15.
  */
-class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility: ChatServerUtility) extends Runnable {
+class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility: ChatServerUtility) {
 
   object MessageType extends Enumeration {
     type MessageType = Value
     val Join, Leave, Disconnect, Chat, Error, Helo, Kill = Value
   }
 
-
-  override def run(): Unit = {
+  def handleMessage(): Unit = {
+    println("Handling message for: " + user.getId + "/" + user.getName)
     val firstLine = user.getNextLine
     val messageType = getMessageType(firstLine)
 
@@ -45,8 +45,10 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
   def handleJoinMessage(firstLine: String): Unit = {
     try {
       val chatRoomName = firstLine.split(":")(1).trim
-      val clientIP = user.getNextLine.split(":")(1).trim //will be 0 as TCP
-      val clientPort = user.getNextLine.split(":")(1).trim //will be 0 as TCP
+      val clientIP = 0//will be 0 as TCP
+      user.getNextLine
+      val clientPort = 0 //will be 0 as TCP
+      user.getNextLine
       val username = user.getNextLine.split(":")(1).trim
 
       if(user.attemptToSetName(username)) {
@@ -101,13 +103,17 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
       val chatRoom = Integer.parseInt(firstLine.split(":")(1).trim)
       val joinId = Integer.parseInt(user.getNextLine.split(":")(1).trim)
       val username = user.getNextLine.split(":")(1).trim
-      var message = ""
-      if(areIdentifiersValid(joinId, username)) {
-        while(user.getNextLine != "") {
-          message = message + user.getNextLine + "\n"
-        }
-        chatRoomHandler.sendMessage(user, chatRoom, message)
+      var message = user.getNextLine.split(":")(1)
+
+      var nextMessagePart = user.getNextLine
+      while(nextMessagePart.length != 0) {
+        message = message + nextMessagePart
+        nextMessagePart = user.getNextLine
       }
+
+
+      chatRoomHandler.sendMessage(user, chatRoom, message)
+
     } catch {
       case e: Exception => {
         user.sendError(ErrorList.malformedPacket)

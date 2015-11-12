@@ -19,7 +19,7 @@ object ChatServer extends ChatServerUtility {
   var serverSocket: ServerSocket = null
   var threadPool: ExecutorService = null
   var portNumber: Int = -1
-  var userListener: UserListener = new UserListenerImplementation(this)
+  var userHandler: UserHandler = new UserHandlerImplementation(this)
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
@@ -31,7 +31,8 @@ object ChatServer extends ChatServerUtility {
       try {
         val s = serverSocket.accept()
         println("Connection accepted")
-        userListener.addUser(s)
+        userHandler.addUser(s)
+
       } catch {
         case e: Exception => {
           exit = true
@@ -48,7 +49,7 @@ object ChatServer extends ChatServerUtility {
     try {
       portNumber = Integer.parseInt(port)
       serverSocket = new ServerSocket(portNumber)
-      threadPool = Executors.newFixedThreadPool(16)
+      threadPool = Executors.newFixedThreadPool(32)
       println("Listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {

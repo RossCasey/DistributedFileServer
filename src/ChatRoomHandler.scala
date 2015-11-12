@@ -55,7 +55,7 @@ class ChatRoomHandlerImplementation(serverUtility: ChatServerUtility) extends Ch
   private def doesChatRoomExist(chatRoomName: String): Boolean = {
     for(chatRoom <- chatRooms) {
       if(chatRoom.getName == chatRoomName) {
-        true
+        return true
       }
     }
     false
@@ -64,7 +64,7 @@ class ChatRoomHandlerImplementation(serverUtility: ChatServerUtility) extends Ch
   private def doesChatRoomExist(chatRoomRef: Int): Boolean = {
     for(chatRoom <- chatRooms) {
       if(chatRoom.getId == chatRoomRef) {
-        true
+        return true
       }
     }
     false
