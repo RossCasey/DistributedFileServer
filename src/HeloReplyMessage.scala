@@ -6,6 +6,6 @@ class HeloReplyMessage(original: String, ip: String, port: String, studentID: St
     original + "\n" +
     "IP:" + ip + "\n" +
     "Port:" + port + "\n" +
-    "StudentID:" + studentID
+    "StudentID:" + studentID + "\n"
   }
 }
