@@ -24,7 +24,7 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
       case MessageType.Disconnect => handleDisconnectMessage(firstLine)
       case MessageType.Helo => handleHeloMessage(firstLine)
       case MessageType.Kill => handleKillMessage()
-      //case MessageType.Error => handleError()
+      case MessageType.Error => handleUnknownPacket(firstLine)
     }
   }
 
@@ -47,13 +47,22 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
 
 
   /**
+   * Handles a line that cannot be identifed
+   * @param firstLine - first line of unidentified message
+   */
+  private def handleUnknownPacket(firstLine: String):Unit = {
+    print("CONTENTS OF UNIDENTIFIED PACKET:")
+    println(firstLine)
+  }
+
+
+  /**
    * Handles a helo message from a user
    * @param firstLine - first line of helo message
    */
   private def handleHeloMessage(firstLine: String): Unit = {
-    val ip = user.getSocket.getLocalAddress.toString.substring(1)
     val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
-    user.sendMessage(new HeloReplyMessage(firstLine, ip, serverUtility.getPort, id))
+    user.sendMessage(new HeloReplyMessage(firstLine, serverUtility.getIP, serverUtility.getPort, id))
   }
 
 
