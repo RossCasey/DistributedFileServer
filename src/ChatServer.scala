@@ -1,4 +1,4 @@
-import java.net.ServerSocket
+import java.net.{InetAddress, ServerSocket}
 import java.util.concurrent.{Executors, ExecutorService}
 
 /**
@@ -68,7 +68,7 @@ object ChatServer extends ChatServerUtility {
    * @return IP address of server
    */
   def getIP: String = {
-    serverSocket.getInetAddress.getHostAddress
+    InetAddress.getLocalHost().getHostAddress
   }
 
 
