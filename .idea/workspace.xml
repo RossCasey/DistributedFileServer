@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf073124-dc05-449e-90f2-a639072ddd0a" name="Default" comment="" />
+    <list default="true" id="bf073124-dc05-449e-90f2-a639072ddd0a" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MessageHandler.scala" afterPath="$PROJECT_DIR$/src/MessageHandler.scala" />
+    </list>
     <ignored path="Echo Server.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -37,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChatServer.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ChatServer.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.1551725">
-              <caret line="31" column="37" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
               <folding>
                 <element signature="e#996#1499#0" expanded="false" />
                 <element signature="e#1504#1622#0" expanded="false" />
@@ -103,16 +105,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageHandler.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MessageHandler.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="150" column="31" selection-start-line="150" selection-start-column="31" selection-end-line="150" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.3821839">
+              <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
               <folding>
-                <element signature="e#1048#1711#0" expanded="false" />
-                <element signature="e#3450#3584#0" expanded="false" />
-                <element signature="e#5087#5226#0" expanded="false" />
-                <element signature="e#5231#5694#0" expanded="false" />
+                <element signature="e#1050#1713#0" expanded="false" />
+                <element signature="e#3452#3586#0" expanded="false" />
+                <element signature="e#5089#5228#0" expanded="false" />
+                <element signature="e#5233#5696#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -200,9 +202,9 @@
         <option value="$PROJECT_DIR$/src/ServerMessage.scala" />
         <option value="$PROJECT_DIR$/src/UserHandler.scala" />
         <option value="$PROJECT_DIR$/src/User.scala" />
-        <option value="$PROJECT_DIR$/src/MessageHandler.scala" />
         <option value="$PROJECT_DIR$/src/ChatServer.scala" />
         <option value="$PROJECT_DIR$/src/ChatRoom.scala" />
+        <option value="$PROJECT_DIR$/src/MessageHandler.scala" />
       </list>
     </option>
   </component>
@@ -738,12 +740,12 @@
       <workItem from="1447182494960" duration="6110000" />
       <workItem from="1447236221890" duration="36664000" />
       <workItem from="1447325023379" duration="1156000" />
-      <workItem from="1447417933608" duration="10640000" />
+      <workItem from="1447417933608" duration="10723000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70256000" />
+    <option name="totallyTimeSpent" value="70339000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -1163,19 +1165,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="150" column="31" selection-start-line="150" selection-start-column="31" selection-end-line="150" selection-end-column="31" />
-          <folding>
-            <element signature="e#1048#1711#0" expanded="false" />
-            <element signature="e#3450#3584#0" expanded="false" />
-            <element signature="e#5087#5226#0" expanded="false" />
-            <element signature="e#5231#5694#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ChatReplyMessage.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1214,14 +1203,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.1551725">
-          <caret line="31" column="37" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
           <folding>
             <element signature="e#996#1499#0" expanded="false" />
             <element signature="e#1504#1622#0" expanded="false" />
             <element signature="e#1627#1744#0" expanded="false" />
             <element signature="e#1749#1912#0" expanded="false" />
             <element signature="e#1917#2006#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3821839">
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+          <folding>
+            <element signature="e#1050#1713#0" expanded="false" />
+            <element signature="e#3452#3586#0" expanded="false" />
+            <element signature="e#5089#5228#0" expanded="false" />
+            <element signature="e#5233#5696#0" expanded="false" />
           </folding>
         </state>
       </provider>

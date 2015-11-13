@@ -24,7 +24,7 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
       case MessageType.Disconnect => handleDisconnectMessage(firstLine)
       case MessageType.Helo => handleHeloMessage(firstLine)
       case MessageType.Kill => handleKillMessage()
-      case MessageType.Error => handleError()
+      //case MessageType.Error => handleError()
     }
   }
 
