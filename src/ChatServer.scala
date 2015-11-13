@@ -68,7 +68,7 @@ object ChatServer extends ChatServerUtility {
    * @return IP address of server
    */
   def getIP: String = {
-    InetAddress.getLocalHost().getHostAddress
+    "178.62.123.87"
   }
 
 
