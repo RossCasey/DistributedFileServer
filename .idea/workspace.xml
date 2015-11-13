@@ -42,12 +42,12 @@
       <file leaf-file-name="ChatServer.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.70977014">
-              <caret line="72" column="19" selection-start-line="72" selection-start-column="19" selection-end-line="72" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.62356323">
+              <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
               <folding>
                 <element signature="e#1011#1514#0" expanded="false" />
-                <element signature="e#1845#2008#0" expanded="false" />
-                <element signature="e#2013#2102#0" expanded="false" />
+                <element signature="e#1779#1942#0" expanded="false" />
+                <element signature="e#1947#2036#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -737,12 +737,12 @@
       <workItem from="1447182494960" duration="6110000" />
       <workItem from="1447236221890" duration="36664000" />
       <workItem from="1447325023379" duration="1156000" />
-      <workItem from="1447417933608" duration="12472000" />
+      <workItem from="1447417933608" duration="12598000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72088000" />
+    <option name="totallyTimeSpent" value="72214000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -1212,12 +1212,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70977014">
-          <caret line="72" column="19" selection-start-line="72" selection-start-column="19" selection-end-line="72" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.62356323">
+          <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
           <folding>
             <element signature="e#1011#1514#0" expanded="false" />
-            <element signature="e#1845#2008#0" expanded="false" />
-            <element signature="e#2013#2102#0" expanded="false" />
+            <element signature="e#1779#1942#0" expanded="false" />
+            <element signature="e#1947#2036#0" expanded="false" />
           </folding>
         </state>
       </provider>
