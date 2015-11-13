@@ -1,3 +1,5 @@
+import java.net.SocketException
+
 /**
  * Created by Ross on 11/11/15.
  */
@@ -8,12 +10,21 @@ class UserInputListener(user: User, chatRoomHandler: ChatRoomHandler, serverUtil
 
     println("LISTENER CREATED FOR: " + user.getId)
 
-    while(!user.getSocket.isClosed) {
-      //if(user.hasMessage) {
-        println("Message received on: " + user.getId)
-        messageHandler.handleMessage()
-        println("finish handling new message")
-      //}
+    try {
+      while(user.getSocket.isConnected) {
+
+        if(user.hasMessage) {
+          println("Message received on: " + user.getId)
+          messageHandler.handleMessage()
+          println("Finished handling new message on: " + user.getId)
+        }
+
+        Thread.sleep(50)
+      }
+    } catch {
+      case e: SocketException => {
+        println("Socket closing for " + user.getId + "/" + user.getName)
+      }
     }
   }
 

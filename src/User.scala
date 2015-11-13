@@ -26,48 +26,80 @@ class User() {
     out = new PrintStream(socket.getOutputStream())
   }
 
-
-  def getNextLine: String = {
+  /**
+   * Gets the next line of input from the user
+   * @return the next line of input sent by the user
+   */
+  def nextLine(): String = {
     val message = in.next()
-    println("RECEIVED on " + name + ": " + message)
+    println("RECEIVED on "  + id + "/" + name + ": " + message)
     message
   }
 
+
+  /**
+   * Send a message to the user
+   * @param message - message to send
+   */
   def sendMessage(message: ServerMessage): Unit = {
     out.print(message.toString)
     out.flush()
-    println("SENDING on " + name + ": " + message)
-
-    if(message.toString.contains("hello world from client 1") && name == "client3") {
-      userHandler.checkAllConnections()
-    }
+    println("SENDING on " + id + "/" + name + ": " + message)
   }
 
+
+  /**
+   * Send error to user, remove from its from server records and close connection.
+   * @param error - error to send
+   */
   def sendError(error: Error): Unit = {
     out.print(error.toString)
     out.flush()
     userHandler.removeUser(this)
   }
 
+
+  /**
+   * Determines whether it is possible to read a message from the user
+   * @return whether or not a message exists
+   */
   def hasMessage: Boolean = {
     //socket.getInputStream.available() != 0
     in.hasNext
   }
 
+
+  /**
+   * @return user's ID
+   */
   def getId: Int = {
     id
   }
 
+
+  /**
+   * Close a user's socket connection
+   */
   def closeConnection(): Unit = {
     if(!socket.isClosed) {
       socket.close()
     }
   }
 
+
+  /**
+   * Request the user to remove themselves from the server records and close their connection
+   */
   def requestConnectionClose(): Unit = {
     userHandler.removeUser(this)
   }
 
+
+  /**
+   * Attempt to acquire specified username
+   * @param name - name to acquire
+   * @return whether it was able to secure that name
+   */
   def attemptToSetName(name: String): Boolean = {
     if(this.name == null) {
       if(userHandler.isUsernameTaken(name)) {
@@ -81,17 +113,19 @@ class User() {
     }
   }
 
+
+  /**
+   * @return user's username
+   */
   def getName: String = {
     name
   }
 
+
+  /**
+   * @return user's socket
+   */
   def getSocket: Socket = {
     socket
   }
-
-  def sendAny(m: String): Unit = {
-    out.print(m)
-    out.flush()
-  }
-
 }
