@@ -56,7 +56,6 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
     */
   def handleUserDisconnect(user: User): Unit = {
     if(isUserInGroup(user)) {
-      println(users.length)
       sendMessage(user, user.getName + " has left this chatroom.\n")
       removeUser(user)
     }
@@ -86,7 +85,6 @@ class ChatRoom(id: Int, name: String, serverUtility: ChatServerUtility) {
    */
   def sendMessage(user: User, message: String):Unit = {
     val chatMessage = createChatMessage(user, message)
-    println("GOT HERE IN SEND MESSAGE IN CHATROOM")
     for(user <- users) {
       user.sendMessage(chatMessage)
     }
