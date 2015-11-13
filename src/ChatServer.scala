@@ -68,8 +68,7 @@ object ChatServer extends ChatServerUtility {
    * @return IP address of server
    */
   def getIP: String = {
-    //serverSocket.getInetAddress.getHostAddress
-    "83.220.199.228"
+    serverSocket.getInetAddress.getHostAddress
   }
 
 
@@ -78,7 +77,6 @@ object ChatServer extends ChatServerUtility {
    */
   def getPort: String = {
     serverSocket.getLocalPort.toString
-    "443"
   }
 
 
