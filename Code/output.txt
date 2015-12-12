@@ -1,0 +1,364 @@
+Listening on port 8001: 
+Connection accepted
+LISTENER CREATED FOR: 0
+Message received on: 0
+RECEIVED on null: HELO BASE_TEST
+Handling message for: 0/null
+SENDING on null: HELO BASE_TEST
+IP:192.168.0.66
+Port:8001
+StudentID:cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3
+finish handling new message
+Connection accepted
+LISTENER CREATED FOR: 1
+Message received on: 1
+RECEIVED on null: JOIN_CHATROOM:room1
+Handling message for: 1/null
+RECEIVED on null: CLIENT_IP:0
+RECEIVED on null: PORT:0
+RECEIVED on null: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: LEAVE_CHATROOM: 0
+Handling message for: 1/client1
+RECEIVED on client1: JOIN_ID: 1
+RECEIVED on client1: CLIENT_NAME: client1
+SENDING on client1: LEFT_CHATROOM: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has left this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: JOIN_CHATROOM:room1
+Handling message for: 1/client1
+RECEIVED on client1: CLIENT_IP:0
+RECEIVED on client1: PORT:0
+RECEIVED on client1: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: JOIN_CHATROOM:room2
+Handling message for: 1/client1
+RECEIVED on client1: CLIENT_IP:0
+RECEIVED on client1: PORT:0
+RECEIVED on client1: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room2
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 1
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 1
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: LEAVE_CHATROOM: 0
+Handling message for: 1/client1
+RECEIVED on client1: JOIN_ID: 1
+RECEIVED on client1: CLIENT_NAME: client1
+SENDING on client1: LEFT_CHATROOM: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has left this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: LEAVE_CHATROOM: 1
+Handling message for: 1/client1
+RECEIVED on client1: JOIN_ID: 1
+RECEIVED on client1: CLIENT_NAME: client1
+SENDING on client1: LEFT_CHATROOM: 1
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 1
+CLIENT_NAME: client1
+MESSAGE: client1 has left this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: JOIN_CHATROOM:room1
+Handling message for: 1/client1
+RECEIVED on client1: CLIENT_IP:0
+RECEIVED on client1: PORT:0
+RECEIVED on client1: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Connection accepted
+LISTENER CREATED FOR: 2
+Message received on: 2
+RECEIVED on null: JOIN_CHATROOM:room1
+Handling message for: 2/null
+RECEIVED on null: CLIENT_IP:0
+RECEIVED on null: PORT:0
+RECEIVED on null: CLIENT_NAME:client2
+SENDING on client2: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 2
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has joined this chatroom.
+
+
+SENDING on client2: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 2
+RECEIVED on client2: LEAVE_CHATROOM: 0
+Handling message for: 2/client2
+RECEIVED on client2: JOIN_ID: 2
+RECEIVED on client2: CLIENT_NAME: client2
+SENDING on client2: LEFT_CHATROOM: 0
+JOIN_ID: 2
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has left this chatroom.
+
+
+SENDING on client2: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has left this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: LEAVE_CHATROOM: 0
+Handling message for: 1/client1
+RECEIVED on client1: JOIN_ID: 1
+RECEIVED on client1: CLIENT_NAME: client1
+SENDING on client1: LEFT_CHATROOM: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has left this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: JOIN_CHATROOM:room1
+Handling message for: 1/client1
+RECEIVED on client1: CLIENT_IP:0
+RECEIVED on client1: PORT:0
+RECEIVED on client1: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 2
+RECEIVED on client2: JOIN_CHATROOM:room1
+Handling message for: 2/client2
+RECEIVED on client2: CLIENT_IP:0
+RECEIVED on client2: PORT:0
+RECEIVED on client2: CLIENT_NAME:client2
+SENDING on client2: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 2
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has joined this chatroom.
+
+
+SENDING on client2: CHAT: 0
+CLIENT_NAME: client2
+MESSAGE: client2 has joined this chatroom.
+
+
+finish handling new message
+Connection accepted
+LISTENER CREATED FOR: 3
+Message received on: 3
+RECEIVED on null: JOIN_CHATROOM:room1
+Handling message for: 3/null
+RECEIVED on null: CLIENT_IP:0
+RECEIVED on null: PORT:0
+RECEIVED on null: CLIENT_NAME:client3
+SENDING on client3: JOINED_CHATROOM: room1
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 0
+JOIN_ID: 3
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client3
+MESSAGE: client3 has joined this chatroom.
+
+
+SENDING on client2: CHAT: 0
+CLIENT_NAME: client3
+MESSAGE: client3 has joined this chatroom.
+
+
+SENDING on client3: CHAT: 0
+CLIENT_NAME: client3
+MESSAGE: client3 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: JOIN_CHATROOM:room2
+Handling message for: 1/client1
+RECEIVED on client1: CLIENT_IP:0
+RECEIVED on client1: PORT:0
+RECEIVED on client1: CLIENT_NAME:client1
+SENDING on client1: JOINED_CHATROOM: room2
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 1
+JOIN_ID: 1
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 1
+CLIENT_NAME: client1
+MESSAGE: client1 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 3
+RECEIVED on client3: JOIN_CHATROOM:room2
+Handling message for: 3/client3
+RECEIVED on client3: CLIENT_IP:0
+RECEIVED on client3: PORT:0
+RECEIVED on client3: CLIENT_NAME:client3
+SENDING on client3: JOINED_CHATROOM: room2
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 1
+JOIN_ID: 3
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 1
+CLIENT_NAME: client3
+MESSAGE: client3 has joined this chatroom.
+
+
+SENDING on client3: CHAT: 1
+CLIENT_NAME: client3
+MESSAGE: client3 has joined this chatroom.
+
+
+finish handling new message
+Connection accepted
+LISTENER CREATED FOR: 4
+Message received on: 4
+RECEIVED on null: JOIN_CHATROOM:room2
+Handling message for: 4/null
+RECEIVED on null: CLIENT_IP:0
+RECEIVED on null: PORT:0
+RECEIVED on null: CLIENT_NAME:client4
+SENDING on client4: JOINED_CHATROOM: room2
+SERVER_IP: 0.0.0.0
+PORT: 8001
+ROOM_REF: 1
+JOIN_ID: 4
+
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 1
+CLIENT_NAME: client4
+MESSAGE: client4 has joined this chatroom.
+
+
+SENDING on client3: CHAT: 1
+CLIENT_NAME: client4
+MESSAGE: client4 has joined this chatroom.
+
+
+SENDING on client4: CHAT: 1
+CLIENT_NAME: client4
+MESSAGE: client4 has joined this chatroom.
+
+
+finish handling new message
+Message received on: 1
+RECEIVED on client1: CHAT: 0
+Handling message for: 1/client1
+RECEIVED on client1: JOIN_ID: 1
+RECEIVED on client1: CLIENT_NAME: client1
+RECEIVED on client1: MESSAGE: hello world from client 1
+RECEIVED on client1: 
+GOT HERE IN SEND MESSAGE IN CHATROOM
+SENDING on client1: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE:  hello world from client 1
+
+SENDING on client2: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE:  hello world from client 1
+
+SENDING on client3: CHAT: 0
+CLIENT_NAME: client1
+MESSAGE:  hello world from client 1
+
+finish handling new message
