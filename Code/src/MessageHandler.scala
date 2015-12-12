@@ -1,12 +1,12 @@
 /**
  * Created by Ross on 10/11/15.
  */
-class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility: ChatServerUtility) {
+class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
 
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val Join, Leave, Disconnect, Chat, Error, Helo, Kill = Value
+    val Join, Leave, Disconnect, Chat, Error, Helo, Kill, FileRequest = Value
   }
 
   /**
@@ -14,17 +14,21 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
    * all necessary actions to handle it appropriately.
    */
   def handleMessage(): Unit = {
-    val firstLine = user.nextLine
+    val firstLine = connection.nextLine
     val messageType = getMessageType(firstLine)
 
     messageType match {
-      case MessageType.Join => handleJoinMessage(firstLine)
-      case MessageType.Chat => handleChatMessage(firstLine)
-      case MessageType.Leave => handleLeaveMessage(firstLine)
-      case MessageType.Disconnect => handleDisconnectMessage(firstLine)
+      //case MessageType.Join => handleJoinMessage(firstLine)
+      //case MessageType.Chat => handleChatMessage(firstLine)
+      //case MessageType.Leave => handleLeaveMessage(firstLine)
+      //case MessageType.Disconnect => handleDisconnectMessage(firstLine)
       case MessageType.Helo => handleHeloMessage(firstLine)
       case MessageType.Kill => handleKillMessage()
+
+      case MessageType.FileRequest => handleReadFileMessage(firstLine)
+
       case MessageType.Error => handleUnknownPacket(firstLine)
+
     }
   }
 
@@ -36,12 +40,14 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
    * @return the type of message it is
    */
   private def getMessageType(firstLine: String): MessageType = {
-    if(firstLine.startsWith("JOIN_CHATROOM")) return MessageType.Join
-    if(firstLine.startsWith("LEAVE_CHATROOM")) return MessageType.Leave
-    if(firstLine.startsWith("DISCONNECT")) return MessageType.Disconnect
-    if(firstLine.startsWith("CHAT")) return MessageType.Chat
+    //if(firstLine.startsWith("JOIN_CHATROOM")) return MessageType.Join
+    //if(firstLine.startsWith("LEAVE_CHATROOM")) return MessageType.Leave
+    //if(firstLine.startsWith("DISCONNECT")) return MessageType.Disconnect
+    //if(firstLine.startsWith("CHAT")) return MessageType.Chat
     if(firstLine.startsWith("HELO")) return MessageType.Helo
     if(firstLine.startsWith("KILL_SERVICE")) return MessageType.Kill
+    if(firstLine.startsWith("READ_FILE")) return MessageType.FileRequest
+
     MessageType.Error
   }
 
@@ -62,10 +68,11 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
    */
   private def handleHeloMessage(firstLine: String): Unit = {
     val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
-    user.sendMessage(new HeloReplyMessage(firstLine, serverUtility.getIP, serverUtility.getPort, id))
+    connection.sendMessage(new HeloReplyMessage(firstLine, serverUtility.getIP, serverUtility.getPort, id))
   }
 
 
+  /*
   /**
    * Handles a join message from a user that wishes to join a particular server
    * @param firstLine - first line of the join message
@@ -110,12 +117,6 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
   }
 
 
-  /**
-   * Handles a Kill server message sent by user
-   */
-  private def handleKillMessage(): Unit = {
-    serverUtility.killServer
-  }
 
 
   /**
@@ -195,5 +196,21 @@ class MessageHandler(user: User, chatRoomHandler: ChatRoomHandler, serverUtility
       return false
     }
     true
+  }
+
+  */
+
+
+
+  /**
+   * Handles a Kill server message sent by user
+   */
+  private def handleKillMessage(): Unit = {
+    serverUtility.killServer
+  }
+
+  private def handleReadFileMessage(firstLine: String): Unit = {
+    val fileIdentifier = firstLine.split(":")(1).trim
+    FileHandler.sendFileToConnection(connection, fileIdentifier)
   }
 }

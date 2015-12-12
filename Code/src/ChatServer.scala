@@ -1,5 +1,9 @@
 import java.net.{InetAddress, ServerSocket}
 import java.util.concurrent.{Executors, ExecutorService}
+import java.nio.file.{Files, Paths}
+import java.io.File
+import scala.collection.mutable.ArrayBuffer
+
 
 /**
  * Created by Ross on 10/11/15.
@@ -14,16 +18,20 @@ trait ChatServerUtility {
 }
 
 
+
+
+
+
 object ChatServer extends ChatServerUtility {
 
   var serverSocket: ServerSocket = null
   var threadPool: ExecutorService = null
   var portNumber: Int = -1
-  var userHandler: UserHandler = new UserHandlerImplementation(this)
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
     startServer(args(0))
+    setupFileDirectory()
 
 
     var exit = false
@@ -31,7 +39,10 @@ object ChatServer extends ChatServerUtility {
       try {
         val s = serverSocket.accept()
         println("Connection accepted")
-        userHandler.addUser(s)
+
+
+        val newConnection = new Connection(computeNextId(), s)
+        execute(new ConnectionInputListener(newConnection, this))
 
       } catch {
         case e: Exception => {
@@ -94,5 +105,45 @@ object ChatServer extends ChatServerUtility {
    */
   def killServer(): Unit = {
     serverSocket.close()
+  }
+
+
+  /**
+   * Opens file
+   */
+  def openFile(): Unit = {
+    val byteArray = Files.readAllBytes(Paths.get("./start.sh"))
+
+    println(byteArray.length)
+    //val path = Paths.get("./")
+
+    val directory = new File("./")
+    val files = directory.listFiles  // this is File[]
+    val dirNames = ArrayBuffer[String]()
+    for (file <- files) {
+      if (file.isFile) {
+        dirNames += file.getName
+        println(file.getName)
+      }
+    }
+
+  }
+
+
+  def setupFileDirectory(): Unit = {
+    val dir = new File("./Files");
+    if(!dir.exists()) {
+      println("Files directory does not exist. Creating one now...")
+      dir.mkdir()
+    } else {
+      println("Files directory already exists.")
+    }
+  }
+
+  var connectionId = 0
+  private def computeNextId(): Int = {
+    val newId = connectionId
+    connectionId += 1
+    newId
   }
 }
