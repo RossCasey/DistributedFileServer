@@ -8,7 +8,7 @@ class ConnectionInputListener(connection: Connection, serverUtility: ChatServerU
   override def run(): Unit = {
     val messageHandler = new MessageHandler(connection, serverUtility)
 
-    println("LISTENER CREATED FOR: " + connection.getId)
+    println("Listener created for: " + connection.getId)
 
     try {
       while(connection.isConnected) {
@@ -21,9 +21,10 @@ class ConnectionInputListener(connection: Connection, serverUtility: ChatServerU
 
         Thread.sleep(50)
       }
+      println("Socket closing for " + connection.getId)
     } catch {
       case e: SocketException => {
-        println("Socket closing for " + connection.getId)
+        println("Socket closing due to error for " + connection.getId)
       }
     }
   }

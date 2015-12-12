@@ -1,4 +1,4 @@
-import java.io.PrintStream
+import java.io.{InputStream, PrintStream}
 import java.net._
 
 import scala.io.BufferedSource
@@ -8,18 +8,19 @@ import scala.io.BufferedSource
  */
 class Connection() {
 
-  private var in: Iterator[String] = null
   private var out: PrintStream = null
-  private val id: Int = -1
+  private var id: Int = -1
   private var socket: Socket = null
+  private var in: InputStream = null
 
 
   def this(id: Int, socket: Socket) {
     this()
     this.socket = socket
+    this.id = id
 
-    in = new BufferedSource(socket.getInputStream()).getLines()
     out = new PrintStream(socket.getOutputStream())
+    in = socket.getInputStream()
   }
 
   /**
@@ -27,9 +28,15 @@ class Connection() {
    * @return the next line of input sent by the user
    */
   def nextLine(): String = {
-    val message = in.next()
-    println("RECEIVED on "  + id + ": " + message)
-    message
+    var line = ""
+
+    var nextChar = in.read()
+    while(nextChar != 10) {
+      line += nextChar.toChar
+      nextChar = in.read()
+    }
+    println("RECEIVED on " + id + ": " + line)
+    line
   }
 
 
@@ -59,7 +66,7 @@ class Connection() {
    * @return whether or not a message exists
    */
   def hasMessage: Boolean = {
-    in.hasNext
+    in.available() > 0
   }
 
   /**
@@ -78,8 +85,23 @@ class Connection() {
   }
 
 
+  /**
+   * Sends bytes to client at other end of connection
+   * @param bytes - array of bytes to send
+   */
   def sendBytes(bytes: Array[Byte]): Unit = {
     out.write(bytes)
     out.flush()
+  }
+
+
+  /**
+   * Reads a single byte from connection
+   * @return next byte from connection
+   */
+  def readByte(): Byte = {
+    val aByte = Array[Byte](1)
+    in.read(aByte)
+    aByte(0)
   }
 }
