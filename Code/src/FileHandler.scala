@@ -1,4 +1,5 @@
 import java.io.{BufferedOutputStream, FileOutputStream, ByteArrayOutputStream, File}
+import java.net.Socket
 import java.nio.file.{Paths, Files}
 import scala.collection.mutable.ArrayBuffer
 
@@ -6,7 +7,7 @@ import scala.collection.mutable.ArrayBuffer
  * Created by Ross on 12/12/15.
  */
 object FileHandler {
-  val base = "./Files/"
+  val base = "../Files/"
 
   private def getFile(fileIdentifier: String): Array[Byte] = {
     val byteArray = Files.readAllBytes(Paths.get(base + fileIdentifier))
@@ -20,7 +21,28 @@ object FileHandler {
     connection.sendBytes(file)
   }
 
-  def saveFile(connection: Connection, length: Int, fileIdentifier: String): Unit = {
+
+
+  private def copyFileToReplica(fileIdentifier: String, replica: NodeAddress): Unit = {
+    try {
+      val repCon = new Connection(0, new Socket(replica.getIP, Integer.parseInt(replica.getPort)))
+      sendFileToConnection(repCon, fileIdentifier)
+    } catch {
+      case e: Exception => {
+        println(s"FAILED TO COPY FILL TO REPLICA " + replica.getIP + "/" + replica.getPort)
+      }
+    }
+  }
+
+
+  private def copyFileToAlleplicas(fileIdentifier: String, replicas: Array[NodeAddress]): Unit = {
+    for(replica <- replicas) {
+      copyFileToReplica(fileIdentifier, replica)
+    }
+  }
+
+
+  def saveFile(connection: Connection, length: Int, fileIdentifier: String, serverUtility: ChatServerUtility): Unit = {
     var count = length
     val baos = new ByteArrayOutputStream()
 
@@ -35,6 +57,8 @@ object FileHandler {
     bos.flush()
     bos.close()
     fos.close()
+
+    copyFileToAlleplicas(fileIdentifier, serverUtility.getReplicaServers)
   }
 
   def computeFileList(): Array[String] = {

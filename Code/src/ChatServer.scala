@@ -2,8 +2,8 @@ import java.net.{Socket, InetAddress, ServerSocket}
 import java.util.concurrent.{Executors, ExecutorService}
 import java.nio.file.{Files, Paths}
 import java.io.File
-import javax.imageio.spi.RegisterableService
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 
 
 /**
@@ -19,6 +19,8 @@ trait ChatServerUtility {
   def getType: String
   def getDirectoryServer: NodeAddress
   def getPrimaryServer: NodeAddress
+  def getReplicaServers: Array[NodeAddress]
+  def addReplicaServer(replica: NodeAddress): Unit
 }
 
 
@@ -35,6 +37,8 @@ object ChatServer extends ChatServerUtility {
   var nodeType: String = ""
   var directoryServer: NodeAddress = null
   var primaryServer: NodeAddress = null
+
+  var replicaServers = ListBuffer[NodeAddress]()
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
@@ -200,5 +204,14 @@ object ChatServer extends ChatServerUtility {
 
   def getDirectoryServer: NodeAddress = {
     directoryServer
+  }
+
+
+  def addReplicaServer(replica: NodeAddress): Unit = {
+    replicaServers += replica
+  }
+
+  def getReplicaServers(): Array[NodeAddress] = {
+    return replicaServers.toArray
   }
 }

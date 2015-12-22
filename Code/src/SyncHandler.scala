@@ -5,7 +5,6 @@ import java.net.Socket
  */
 object SyncHandler {
 
-
   def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection): Unit = {
     println(s"Getting copy of file $fileIdentifier from primary...")
     connection.sendMessage(new RequestReadFileMessage(fileIdentifier))
@@ -44,5 +43,6 @@ object SyncHandler {
     for(fileId <- fileIds) {
       syncFile(fileId, primaryCon)
     }
+    println("SYNC COMPLETE, ALL FILES UP TO DATE")
   }
 }

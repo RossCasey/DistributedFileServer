@@ -6,7 +6,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash = Value
+    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash, RegisterReplica = Value
   }
 
   /**
@@ -26,6 +26,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
 
       case MessageType.FileIDList => handleFileIDListMessage(firstLine)
       case MessageType.FileHash => handleFileHashMessage(firstLine)
+      case MessageType.RegisterReplica => handleReplicaRegistration(firstLine)
 
 
       case MessageType.Error => handleUnknownPacket(firstLine)
@@ -97,7 +98,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   private def handleWriteFileMessage(firstLine: String): Unit = {
     val fileIdentifier = firstLine.split(":")(1).trim
     val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
-    FileHandler.saveFile(connection, length, fileIdentifier)
+    FileHandler.saveFile(connection, length, fileIdentifier, serverUtility)
   }
 
 
@@ -109,5 +110,12 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   private def handleFileHashMessage(firstLine: String): Unit = {
     val fileIdentifier = firstLine.split(":")(1).trim
     FileHandler.sendHashToConnection(connection, fileIdentifier)
+  }
+
+  private def handleReplicaRegistration(firstLine: String): Unit = {
+    val replicaIP = firstLine.split(":")(1).trim
+    val replicaPort = connection.nextLine().split(":")(1).trim
+    val replicaAddress = new NodeAddress(replicaIP, replicaPort)
+    serverUtility.addReplicaServer(replicaAddress)
   }
 }
