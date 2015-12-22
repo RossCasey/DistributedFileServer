@@ -6,7 +6,7 @@ import scala.collection.mutable.ArrayBuffer
  * Created by Ross on 12/12/15.
  */
 object FileHandler {
-  val base = "../Files/"
+  val base = "./Files/"
 
   private def getFile(fileIdentifier: String): Array[Byte] = {
     val byteArray = Files.readAllBytes(Paths.get(base + fileIdentifier))

@@ -5,8 +5,14 @@ class FileIDsResponseMessage(ids: Array[String]) extends ServerMessage {
 
   private def convertStringArrayToString: String = {
     var str = ""
+    var first = true
     for(id <- ids) {
-      str = str + "," + id
+      if(first) {
+        str = str + id
+        first = false
+      } else {
+        str = str + "," + id
+      }
     }
     str
   }
