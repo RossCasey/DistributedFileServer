@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd out
-scala ChatServer $1
+scala ChatServer $@

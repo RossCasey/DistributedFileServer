@@ -6,7 +6,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill = Value
+    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash = Value
   }
 
   /**
@@ -23,6 +23,10 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
 
       case MessageType.ReadFileRequest => handleReadFileMessage(firstLine)
       case MessageType.WriteFileRequest => handleWriteFileMessage(firstLine)
+
+      case MessageType.FileIDList => handleFileIDListMessage(firstLine)
+      case MessageType.FileHash => handleFileHashMessage(firstLine)
+
 
       case MessageType.Error => handleUnknownPacket(firstLine)
 
@@ -41,6 +45,8 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     if(firstLine.startsWith("KILL_SERVICE")) return MessageType.Kill
     if(firstLine.startsWith("READ_FILE")) return MessageType.ReadFileRequest
     if(firstLine.startsWith("WRITE_FILE")) return MessageType.WriteFileRequest
+    if(firstLine.startsWith("REQUEST_FILE_IDS")) return MessageType.FileIDList
+    if(firstLine.startsWith("REQUEST_FILE_HASH")) return MessageType.FileHash
 
     MessageType.Error
   }
@@ -92,5 +98,16 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     val fileIdentifier = firstLine.split(":")(1).trim
     val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
     FileHandler.saveFile(connection, length, fileIdentifier)
+  }
+
+
+  private def handleFileIDListMessage(firstLine: String): Unit = {
+    FileHandler.sendFileListToConnection(connection)
+  }
+
+
+  private def handleFileHashMessage(firstLine: String): Unit = {
+    val fileIdentifier = firstLine.split(":")(1).trim
+    FileHandler.sendHashToConnection(connection, fileIdentifier)
   }
 }

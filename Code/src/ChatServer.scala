@@ -1,7 +1,8 @@
-import java.net.{InetAddress, ServerSocket}
+import java.net.{Socket, InetAddress, ServerSocket}
 import java.util.concurrent.{Executors, ExecutorService}
 import java.nio.file.{Files, Paths}
 import java.io.File
+import javax.imageio.spi.RegisterableService
 import scala.collection.mutable.ArrayBuffer
 
 
@@ -15,6 +16,9 @@ trait ChatServerUtility {
   def getPort: String
   def execute(x: Runnable): Unit
   def killServer(): Unit
+  def getType: String
+  def getDirectoryServer: NodeAddress
+  def getPrimaryServer: NodeAddress
 }
 
 
@@ -28,10 +32,19 @@ object ChatServer extends ChatServerUtility {
   var threadPool: ExecutorService = null
   var portNumber: Int = -1
 
+  var nodeType: String = ""
+  var directoryServer: NodeAddress = null
+  var primaryServer: NodeAddress = null
+
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
-    startServer(args(0))
+    startServer(args)
     setupFileDirectory()
+
+    if(nodeType == "REPLICA") {
+      syncWithPrimary()
+    }
+    notifyDirectory()
 
 
     var exit = false
@@ -58,13 +71,22 @@ object ChatServer extends ChatServerUtility {
 
   /**
    * Attempts to start server on specified port
-   * @param port - port to run server on
+   * @param args - arguments passed in to program at run time
    */
-  def startServer(port: String): Unit = {
+  def startServer(args: Array[String]): Unit = {
     try {
-      portNumber = Integer.parseInt(port)
+      portNumber = Integer.parseInt(args(0))
       serverSocket = new ServerSocket(portNumber)
       threadPool = Executors.newFixedThreadPool(32)
+
+      directoryServer = new NodeAddress(args(1), args(2))
+      nodeType = args(3)
+
+      if(nodeType == "REPLICA") {
+        primaryServer = new NodeAddress(args(4), args(5))
+      }
+
+
       println("Listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {
@@ -74,12 +96,31 @@ object ChatServer extends ChatServerUtility {
     }
   }
 
+  def notifyDirectory(): Unit = {
+    return
+
+    val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
+    directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
+
+    val firstLine = directoryConnection.nextLine()
+    if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {
+      println("Registration with directory server successful")
+    }
+  }
+
+
+  def syncWithPrimary(): Unit = {
+    SyncHandler.syncWithPrimary(primaryServer)
+  }
+
+
+
 
   /**
    * @return IP address of server
    */
   def getIP: String = {
-    "178.62.123.87" //server cannot get its own IP due to NAT
+    "localhost" //server cannot get its own IP due to NAT
   }
 
 
@@ -145,5 +186,19 @@ object ChatServer extends ChatServerUtility {
     val newId = connectionId
     connectionId += 1
     newId
+  }
+
+
+  def getType: String = {
+    nodeType
+  }
+
+
+  def getPrimaryServer: NodeAddress = {
+    primaryServer
+  }
+
+  def getDirectoryServer: NodeAddress = {
+    directoryServer
   }
 }
