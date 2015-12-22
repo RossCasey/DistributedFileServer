@@ -101,8 +101,6 @@ object ChatServer extends ChatServerUtility {
   }
 
   def notifyDirectory(): Unit = {
-    return
-
     val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
     directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
 

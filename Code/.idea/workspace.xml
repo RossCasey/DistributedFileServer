@@ -53,10 +53,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SyncHandler.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SyncHandler.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SyncHandler.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3106509">
+            <state vertical-scroll-proportion="0.0">
               <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
               <folding />
             </state>
@@ -75,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChatServer.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ChatServer.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="178" column="26" selection-start-line="178" selection-start-column="26" selection-end-line="178" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.57840234">
+              <caret line="102" column="33" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
@@ -186,9 +186,9 @@
         <option value="$PROJECT_DIR$/src/FileIDsResponseMessage.scala" />
         <option value="$PROJECT_DIR$/src/ReplicaHandler.scala" />
         <option value="$PROJECT_DIR$/src/MessageHandler.scala" />
-        <option value="$PROJECT_DIR$/src/ChatServer.scala" />
         <option value="$PROJECT_DIR$/src/FileHandler.scala" />
         <option value="$PROJECT_DIR$/src/SyncHandler.scala" />
+        <option value="$PROJECT_DIR$/src/ChatServer.scala" />
       </list>
     </option>
   </component>
@@ -720,12 +720,12 @@
       <workItem from="1449917959489" duration="385000" />
       <workItem from="1449918361966" duration="17726000" />
       <workItem from="1449936984778" duration="9896000" />
-      <workItem from="1450793776518" duration="9735000" />
+      <workItem from="1450793776518" duration="10325000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110091000" />
+    <option name="totallyTimeSpent" value="110681000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1280" y="23" width="1280" height="997" extended-state="6" />
@@ -1197,16 +1197,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="178" column="26" selection-start-line="178" selection-start-column="26" selection-end-line="178" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FileHandler.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1220,9 +1210,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SyncHandler.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3106509">
+        <state vertical-scroll-proportion="0.0">
           <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ChatServer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57840234">
+          <caret line="102" column="33" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
