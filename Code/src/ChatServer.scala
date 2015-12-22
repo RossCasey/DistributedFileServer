@@ -172,7 +172,7 @@ object ChatServer extends ChatServerUtility {
 
 
   def setupFileDirectory(): Unit = {
-    val dir = new File("./Files");
+    val dir = new File("../Files");
     if(!dir.exists()) {
       println("Files directory does not exist. Creating one now...")
       dir.mkdir()
