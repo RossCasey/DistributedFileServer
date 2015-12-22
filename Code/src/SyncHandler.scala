@@ -11,7 +11,7 @@ object SyncHandler {
 
     connection.nextLine() //READING_LINE: [file id]
     val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
-    FileHandler.saveFile(connection, length, fileIdentifier)
+    FileHandler.saveFileWithoutSync(connection, length, fileIdentifier)
   }
 
 

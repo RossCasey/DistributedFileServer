@@ -35,7 +35,7 @@ object FileHandler {
   }
 
 
-  private def copyFileToAlleplicas(fileIdentifier: String, replicas: Array[NodeAddress]): Unit = {
+  private def copyFileToAllReplicas(fileIdentifier: String, replicas: Array[NodeAddress]): Unit = {
     for(replica <- replicas) {
       copyFileToReplica(fileIdentifier, replica)
     }
@@ -58,7 +58,26 @@ object FileHandler {
     bos.close()
     fos.close()
 
-    copyFileToAlleplicas(fileIdentifier, serverUtility.getReplicaServers)
+    if(serverUtility.getType == "PRIMARY") {
+      copyFileToAllReplicas(fileIdentifier, serverUtility.getReplicaServers)
+    }
+  }
+
+  def saveFileWithoutSync(connection: Connection, length: Int, fileIdentifier: String): Unit = {
+    var count = length
+    val baos = new ByteArrayOutputStream()
+
+    while(count > 0) {
+      baos.write(connection.readByte())
+      count -= 1
+    }
+    val fos = new FileOutputStream(base + fileIdentifier)
+    val bos = new BufferedOutputStream(fos)
+
+    bos.write(baos.toByteArray)
+    bos.flush()
+    bos.close()
+    fos.close()
   }
 
   def computeFileList(): Array[String] = {
