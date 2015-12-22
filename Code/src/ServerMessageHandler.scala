@@ -26,4 +26,13 @@ object ServerMessageHandler {
   def sendUploadRequest(connection: Connection, path: String, length: Int): Unit = {
     connection.sendMessage(new WriteFileMessage(path, length))
   }
+
+
+  def performReadLookup(connection: Connection, path: String): Unit = {
+    connection.sendMessage(new LookupMessage(path, true))
+  }
+
+  def performWriteLookup(connection: Connection, path: String): Unit = {
+    connection.sendMessage(new LookupMessage(path, false))
+  }
 }

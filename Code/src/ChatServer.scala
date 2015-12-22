@@ -31,7 +31,6 @@ object ChatServer extends ChatServerUtility {
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
     startServer(args(0))
-    setupFileDirectory()
 
 
     var exit = false
@@ -65,7 +64,7 @@ object ChatServer extends ChatServerUtility {
       portNumber = Integer.parseInt(port)
       serverSocket = new ServerSocket(portNumber)
       threadPool = Executors.newFixedThreadPool(32)
-      println("Listening on port " + portNumber + ": ")
+      println("Directory server listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {
         println("SERVER ERROR: " + e.getClass + ": " + e.getMessage)
@@ -107,38 +106,6 @@ object ChatServer extends ChatServerUtility {
     serverSocket.close()
   }
 
-
-  /**
-   * Opens file
-   */
-  def openFile(): Unit = {
-    val byteArray = Files.readAllBytes(Paths.get("./start.sh"))
-
-    println(byteArray.length)
-    //val path = Paths.get("./")
-
-    val directory = new File("./")
-    val files = directory.listFiles  // this is File[]
-    val dirNames = ArrayBuffer[String]()
-    for (file <- files) {
-      if (file.isFile) {
-        dirNames += file.getName
-        println(file.getName)
-      }
-    }
-
-  }
-
-
-  def setupFileDirectory(): Unit = {
-    val dir = new File("./Files");
-    if(!dir.exists()) {
-      println("Files directory does not exist. Creating one now...")
-      dir.mkdir()
-    } else {
-      println("Files directory already exists.")
-    }
-  }
 
   var connectionId = 0
   private def computeNextId(): Int = {

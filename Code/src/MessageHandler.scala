@@ -6,7 +6,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill = Value
+    val Error, Helo, Kill, Lookup, RegisterPrimary, RegisterReplica = Value
   }
 
   /**
@@ -20,12 +20,11 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     messageType match {
       case MessageType.Helo => handleHeloMessage(firstLine)
       case MessageType.Kill => handleKillMessage()
-
-      case MessageType.ReadFileRequest => handleReadFileMessage(firstLine)
-      case MessageType.WriteFileRequest => handleWriteFileMessage(firstLine)
+      case MessageType.Lookup => handleLookup(firstLine)
+      case MessageType.RegisterPrimary => handlePrimaryRegistration(firstLine)
+      case MessageType.RegisterReplica => handleReplicaRegistration(firstLine)
 
       case MessageType.Error => handleUnknownPacket(firstLine)
-
     }
   }
 
@@ -39,8 +38,9 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   private def getMessageType(firstLine: String): MessageType = {
     if(firstLine.startsWith("HELO")) return MessageType.Helo
     if(firstLine.startsWith("KILL_SERVICE")) return MessageType.Kill
-    if(firstLine.startsWith("READ_FILE")) return MessageType.ReadFileRequest
-    if(firstLine.startsWith("WRITE_FILE")) return MessageType.WriteFileRequest
+    if(firstLine.startsWith("LOOKUP")) return MessageType.Lookup
+    if(firstLine.startsWith("REGISTER_PRIMARY"))  return MessageType.RegisterPrimary
+    if(firstLine.startsWith("REGISTER_REPLICA"))  return MessageType.RegisterReplica
 
     MessageType.Error
   }
@@ -74,23 +74,32 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   }
 
 
-  /**
-   * Handles requests from connections to read from a file
-   * @param firstLine - firstLine of request message
-   */
-  private def handleReadFileMessage(firstLine: String): Unit = {
-    val fileIdentifier = firstLine.split(":")(1).trim
-    FileHandler.sendFileToConnection(connection, fileIdentifier)
+  private def handleLookup(firstLine: String): Unit = {
+    val path = firstLine.split(":")(1).trim
+    val lookupType = connection.nextLine().split(":")(1).trim
+
+    if(lookupType == "READ") {
+      LookupHandler.lookupForRead(path, connection)
+    } else if (lookupType == "WRITE") {
+      LookupHandler.lookupForWrite(path, connection)
+    } else {
+      connection.sendError(ErrorList.malformedPacket)
+    }
   }
 
 
-  /**
-   * Handles request from connections to write to a file
-   * @param firstLine - file line of the request message
-   */
-  private def handleWriteFileMessage(firstLine: String): Unit = {
-    val fileIdentifier = firstLine.split(":")(1).trim
-    val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
-    FileHandler.saveFile(connection, length, fileIdentifier)
+
+  private def handlePrimaryRegistration(firstLine: String): Unit = {
+    val ip = firstLine.split(":")(1).trim
+    val port = connection.nextLine().split(":")(1).trim
+    LookupHandler.registerPrimary(connection, ip, port)
+  }
+
+  private def handleReplicaRegistration(firstLine: String): Unit = {
+    val replicaIP = firstLine.split(":")(1).trim
+    val replicaPort = connection.nextLine().split(":")(1).trim
+    val primaryIP = connection.nextLine().split(":")(1).trim
+    val primaryPort = connection.nextLine().split(":")(1).trim
+    LookupHandler.registerReplica(connection, primaryIP, primaryPort, replicaIP, replicaPort)
   }
 }
