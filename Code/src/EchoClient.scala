@@ -13,17 +13,25 @@ object EchoClient {
 
   def main(args: Array[String]) {
 
-    var test = new DistributedFile("testImage.png")
-    test.open()
+    //var test = new DistributedFile("testImage.png")
+    //test.open()
     //test.printContents()
-    test.close()
+    //test.close()
 
 
     val connection = new Connection(0, new Socket(InetAddress.getByName("localhost"), 8000))
-    val node = ServerMessageHandler.getNode(connection, "hello.txt", false)
+    val dict = ServerMessageHandler.getNode(connection, "hello.txt", false)
 
+    if(!dict.contains("error")) {
+      val nodeAddress = dict("address").asInstanceOf[NodeAddress]
+      val ipAddress = nodeAddress.getIP
+      val port = nodeAddress.getPort
 
-
+      println(ipAddress)
+      println(port)
+    } else {
+      println(dict("error"))
+    }
 
   }
 

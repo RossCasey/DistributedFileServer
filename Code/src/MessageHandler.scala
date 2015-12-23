@@ -117,5 +117,6 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     val replicaPort = connection.nextLine().split(":")(1).trim
     val replicaAddress = new NodeAddress(replicaIP, replicaPort)
     serverUtility.addReplicaServer(replicaAddress)
+    connection.sendMessage(new RegisterResponseMessage)
   }
 }

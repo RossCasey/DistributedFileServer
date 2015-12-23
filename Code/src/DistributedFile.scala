@@ -40,10 +40,11 @@ class DistributedFile(path: String) {
 
 
     val connection = new Connection(0, new Socket(InetAddress.getByName(directoryIP), directoryPort))
-    val node = ServerMessageHandler.getNode(connection, path, true)
+    val dict = ServerMessageHandler.getNode(connection, path, true)
 
-    if(node != null) {
-      downloadFile(node)
+    if(!dict.contains("error")) {
+      val nodeAddress = dict("address").asInstanceOf[NodeAddress]
+      downloadFile(nodeAddress)
     } else {
       //init a blank file
     }

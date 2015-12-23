@@ -33,16 +33,23 @@ object SyncHandler {
   }
 
 
-  def syncWithPrimary(primary: NodeAddress): Unit = {
+  def syncWithPrimary(primary: NodeAddress, serverUtility: ChatServerUtility): Unit = {
     val primaryCon = new Connection(0, new Socket(primary.getIP, Integer.parseInt(primary.getPort)))
+    primaryCon.sendMessage(new RegisterReplicaMessage(serverUtility.getIP, serverUtility.getPort, "", ""))
+
     primaryCon.sendMessage(new RequestFileIDsMessage)
+    if(primaryCon.nextLine() == "REGISTRATION_STATUS: OK") {
+      println("SUCCESSFULLY REGISTERED AS REPLICA")
 
-    val list = primaryCon.nextLine().split(":")(1).trim
-    val fileIds = list.split(",")
+      val list = primaryCon.nextLine().split(":")(1).trim
+      val fileIds = list.split(",")
 
-    for(fileId <- fileIds) {
-      syncFile(fileId, primaryCon)
+      for(fileId <- fileIds) {
+        syncFile(fileId, primaryCon)
+      }
+      println("SYNC COMPLETE, ALL FILES UP TO DATE")
+    } else {
+      println("FAILED TO REGISTER AS REPLICA")
     }
-    println("SYNC COMPLETE, ALL FILES UP TO DATE")
   }
 }

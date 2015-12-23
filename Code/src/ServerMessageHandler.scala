@@ -28,15 +28,23 @@ object ServerMessageHandler {
   }
 
 
-  def getNode(connection: Connection, path: String, isRead: Boolean): NodeAddress = {
+  def getNode(connection: Connection, path: String, isRead: Boolean): Map[String, Object] = {
+    var dict = Map[String, Object]()
     connection.sendMessage(new LookupMessage(path, isRead))
     val firstLine = connection.nextLine()
-    if(firstLine.startsWith("LOOKUP_RESULT")) {
-      val ip = firstLine.split(":")(1).trim
+    if(firstLine.startsWith("LOOKUP_ID")) {
+
+      val id = firstLine.split(":")(1).trim
+      val ip = connection.nextLine().split(":")(1).trim
       val port = connection.nextLine().split(":")(1).trim
-      return new NodeAddress(ip, port)
+
+      dict += "id" -> id
+      dict += "address" -> new NodeAddress(ip, port)
+
+      dict
     } else {
-      return null
+      dict += "error" -> connection.nextLine().split(":")(1).trim
+      dict
     }
   }
 }

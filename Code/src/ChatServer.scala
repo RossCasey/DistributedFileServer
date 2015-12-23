@@ -208,7 +208,16 @@ object ChatServer extends ChatServerUtility {
 
 
   def addReplicaServer(replica: NodeAddress): Unit = {
-    replicaServers += replica
+    var alreadyAdded = false
+    for(existingReplica <- replicaServers) {
+      if(existingReplica.getIP == replica.getIP && existingReplica.getPort == replica.getPort) {
+        alreadyAdded = true
+      }
+    }
+
+    if(!alreadyAdded) {
+      replicaServers += replica
+    }
   }
 
   def getReplicaServers(): Array[NodeAddress] = {
