@@ -18,9 +18,8 @@ object EchoClient {
     //test.printContents()
     //test.close()
 
-
     val connection = new Connection(0, new Socket(InetAddress.getByName("localhost"), 8000))
-    val dict = ServerMessageHandler.getNode(connection, "hello.txt", false)
+    val dict = ServerMessageHandler.getNode(connection, "hello.txt", true)
 
     if(!dict.contains("error")) {
       val nodeAddress = dict("address").asInstanceOf[NodeAddress]

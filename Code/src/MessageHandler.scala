@@ -6,7 +6,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash, RegisterReplica = Value
+    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash, RegisterReplica, Ping = Value
   }
 
   /**
@@ -27,6 +27,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
       case MessageType.FileIDList => handleFileIDListMessage(firstLine)
       case MessageType.FileHash => handleFileHashMessage(firstLine)
       case MessageType.RegisterReplica => handleReplicaRegistration(firstLine)
+      case MessageType.Ping => handlePingMessage(firstLine)
 
 
       case MessageType.Error => handleUnknownPacket(firstLine)
@@ -49,6 +50,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     if(firstLine.startsWith("REQUEST_FILE_IDS")) return MessageType.FileIDList
     if(firstLine.startsWith("REQUEST_FILE_HASH")) return MessageType.FileHash
     if(firstLine.startsWith("REGISTER_REPLICA_IP")) return MessageType.RegisterReplica
+    if(firstLine.startsWith("PING")) return MessageType.Ping
 
     MessageType.Error
   }
@@ -123,5 +125,10 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
 
     serverUtility.addReplicaServer(replicaAddress)
     connection.sendMessage(new RegisterResponseMessage)
+  }
+
+
+  private def handlePingMessage(firstLine: String): Unit = {
+    connection.sendMessage(new PongMessage)
   }
 }
