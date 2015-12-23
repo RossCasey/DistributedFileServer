@@ -13,8 +13,8 @@ class DistributedFile(path: String) {
   val contents: ListBuffer[Byte] = ListBuffer()
 
 
-  private def downloadFile(): Unit = {
-    lazy val socket = new Socket(InetAddress.getByName("localhost"), 8004)
+  private def downloadFile(node: NodeAddress): Unit = {
+    lazy val socket = new Socket(InetAddress.getByName(node.getIP), Integer.parseInt(node.getPort))
     val connection = new Connection(0, socket)
 
     var count = ServerMessageHandler.requestFile(connection, path)
@@ -35,9 +35,18 @@ class DistributedFile(path: String) {
   private def initialiseFile(): Unit = {
     //contact directory server -> check if file exists
     //if file exists:
-    downloadFile()
-    //otherwise
-    //init() blank file
+    val directoryIP = "localhost"
+    val directoryPort = 8000
+
+
+    val connection = new Connection(0, new Socket(InetAddress.getByName(directoryIP), directoryPort))
+    val node = ServerMessageHandler.getNode(connection, path, true)
+
+    if(node != null) {
+      downloadFile(node)
+    } else {
+      //init a blank file
+    }
   }
 
 

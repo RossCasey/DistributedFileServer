@@ -26,4 +26,17 @@ object ServerMessageHandler {
   def sendUploadRequest(connection: Connection, path: String, length: Int): Unit = {
     connection.sendMessage(new WriteFileMessage(path, length))
   }
+
+
+  def getNode(connection: Connection, path: String, isRead: Boolean): NodeAddress = {
+    connection.sendMessage(new LookupMessage(path, isRead))
+    val firstLine = connection.nextLine()
+    if(firstLine.startsWith("LOOKUP_RESULT")) {
+      val ip = firstLine.split(":")(1).trim
+      val port = connection.nextLine().split(":")(1).trim
+      return new NodeAddress(ip, port)
+    } else {
+      return null
+    }
+  }
 }

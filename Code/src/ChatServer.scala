@@ -107,6 +107,8 @@ object ChatServer extends ChatServerUtility {
     val firstLine = directoryConnection.nextLine()
     if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {
       println("Registration with directory server successful")
+    } else {
+      println("Error registering with directory server")
     }
   }
 

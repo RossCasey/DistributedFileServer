@@ -18,6 +18,13 @@ object EchoClient {
     //test.printContents()
     test.close()
 
+
+    val connection = new Connection(0, new Socket(InetAddress.getByName("localhost"), 8000))
+    val node = ServerMessageHandler.getNode(connection, "hello.txt", false)
+
+
+
+
   }
 
 
