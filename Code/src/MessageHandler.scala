@@ -48,6 +48,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     if(firstLine.startsWith("WRITE_FILE")) return MessageType.WriteFileRequest
     if(firstLine.startsWith("REQUEST_FILE_IDS")) return MessageType.FileIDList
     if(firstLine.startsWith("REQUEST_FILE_HASH")) return MessageType.FileHash
+    if(firstLine.startsWith("REGISTER_REPLICA_IP")) return MessageType.RegisterReplica
 
     MessageType.Error
   }
@@ -116,6 +117,10 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
     val replicaIP = firstLine.split(":")(1).trim
     val replicaPort = connection.nextLine().split(":")(1).trim
     val replicaAddress = new NodeAddress(replicaIP, replicaPort)
+
+    connection.nextLine() //clear this nodes IP
+    connection.nextLine() //clear this nodes port
+
     serverUtility.addReplicaServer(replicaAddress)
     connection.sendMessage(new RegisterResponseMessage)
   }
