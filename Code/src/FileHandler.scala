@@ -26,7 +26,9 @@ object FileHandler {
   private def copyFileToReplica(fileIdentifier: String, replica: NodeAddress): Unit = {
     try {
       val repCon = new Connection(0, new Socket(replica.getIP, Integer.parseInt(replica.getPort)))
-      sendFileToConnection(repCon, fileIdentifier)
+      val file = getFile(fileIdentifier)
+      repCon.sendMessage(new WriteFileMessage(fileIdentifier, file.length))
+      repCon.sendBytes(file)
     } catch {
       case e: Exception => {
         println(s"FAILED TO COPY FILL TO REPLICA " + replica.getIP + "/" + replica.getPort)

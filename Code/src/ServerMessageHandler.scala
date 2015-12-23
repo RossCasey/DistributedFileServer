@@ -23,8 +23,8 @@ object ServerMessageHandler {
   }
 
 
-  def sendUploadRequest(connection: Connection, path: String, length: Int): Unit = {
-    connection.sendMessage(new WriteFileMessage(path, length))
+  def sendUploadRequest(connection: Connection, fileId: String, length: Int): Unit = {
+    connection.sendMessage(new WriteFileMessage(fileId, length))
   }
 
 
