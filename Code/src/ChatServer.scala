@@ -114,9 +114,8 @@ object ChatServer extends ChatServerUtility {
 
 
   def syncWithPrimary(): Unit = {
-    SyncHandler.syncWithPrimary(primaryServer)
+    SyncHandler.syncWithPrimary(primaryServer, this)
   }
-
 
 
 
