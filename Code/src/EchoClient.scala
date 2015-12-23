@@ -44,33 +44,64 @@ object EchoClient {
     }
   */
 
-    val connection = new Connection(0, new Socket(InetAddress.getByName("localhost"), 8000))
-    val dict = ServerMessageHandler.getNode(connection, "rattle.mp3", true)
-
-    val node = dict("address").asInstanceOf[NodeAddress]
-    val id= dict("id").asInstanceOf[String]
 
 
-    lazy val socket = new Socket(InetAddress.getByName(node.getIP), Integer.parseInt(node.getPort))
-    val readCon = new Connection(0, socket)
+    val connection = new Connection(0, new Socket(InetAddress.getByName("localhost"), 8004))
 
-    var count = ServerMessageHandler.requestFile(readCon, id)
-    val baos = new ByteArrayOutputStream()
+    val encryptedPassword = Encryptor.encrypt("PASSPHRASE".getBytes("UTF-8"), "1234567")
+    val logonRequest = new LogonRequest("rcasey", encryptedPassword, "test", "test")
+    connection.sendMessage(logonRequest)
 
-    while (count != 0) {
-      baos.write(readCon.readByte())
-      count -= 1
+
+
+
+    val token = connection.nextLine().split(":")(1).trim
+    connection.nextLine() //remove redundant Ticket section
+    val decToken = new String(Encryptor.decrypt(token, "12345678"), "UTF-8")
+
+    val lines = decToken.split("\n")
+    val ticket = lines(0).split(":")(1).trim
+    val sessionKey = lines(1)
+    val serverIP = lines(2)
+    val serverPort = lines(3)
+    val exp = lines(4)
+
+    val decTicket = new String(Encryptor.decrypt(ticket, "SuperSecretPassphrase"), "UTF-8")
+    println(sessionKey)
+    println(decTicket)
+
+
+
+
+
+
+
+
+
+    /*
+    val test = "Hello my honey, hello my baby, hello my ragtime girl"
+
+    val encrypted = Encryptor.encrypt(test.getBytes("UTF-8"), "12345678")
+    val decrypted = Encryptor.decrypt(encrypted, "12345678")
+
+    println(new String(decrypted, "UTF-8"))
+    */
+
+    /*
+    val encodeAndEncrypted = "fDVjF2FX220xqcVJg39yIcBCQmJB52cb8gd7Yjbi2PhUor5zCfhhMOpgASUhsvINuczkZyOiddj/XVEB4hF21Mw56Ss0P56hZER4dwyhgN2eT4X+/Kquk9mURFNk3jX1Bdy4oW2NGmhibOHPIOARAeM+u82p2lwyf7zmiLhHgzr75IoYtlGVlLD2RZUyZJYngBUHXoxTzmqarlucPUEKtSwVPNEHWf7sIHFP20jjzKdowQs3FylSlVL5Xh6XP4XG"
+    val decrypted = Encryptor.decrypt(encodeAndEncrypted, "12345678")
+    println(new String(decrypted, "UTF-8"))
+
+
+    val received = "ENCRYPTED_CONTENTS: fDVjF2FX220xqcVJg39yIcBCQmJB52cb8gd7Yjbi2PhUor5zCfhhMOpgASUhsvINuczkZyOiddj/XVEB4hF21Mw56Ss0P56hZER4dwyhgN2eT4X+/Kquk9mURFNk3jX1Bdy4oW2NGmhibOHPIOARAeM+u82p2lwyf7zmiLhHgzr75IoYtlGVlLD2RZUyZJYngBUHXoxTzmqarlucPUEKtSwVPNEHWf7sIHFP20jjzKdowQs3FylSlVL5Xh6XP4XG"
+    val encOnly = received.split(":")(1).trim
+    if(encodeAndEncrypted == encOnly) {
+      println("match")
+    } else {
+      println("does not match")
     }
+    */
 
-    val fos = new FileOutputStream("./Files/rattle.mp3")
-    val bos = new BufferedOutputStream(fos)
-
-    bos.write(baos.toByteArray)
-    bos.flush()
-    bos.close()
-    fos.close()
-
-    socket.close()
   }
 
 

@@ -33,6 +33,8 @@ object ChatServer extends ChatServerUtility {
     //attempt to create a server socket, exit otherwise
     startServer(args)
 
+    EncryptionHandler.addUser("rcasey", "12345678")
+
     var exit = false
     while(!exit) {
       try {
