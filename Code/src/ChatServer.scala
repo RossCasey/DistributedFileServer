@@ -102,7 +102,13 @@ object ChatServer extends ChatServerUtility {
 
   def notifyDirectory(): Unit = {
     val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
-    directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
+
+    if(nodeType == "PRIMARY") {
+      directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
+    } else {
+      directoryConnection.sendMessage(new RegisterReplicaMessage(getIP, getPort, primaryServer.getIP, primaryServer.getPort))
+    }
+    
 
     val firstLine = directoryConnection.nextLine()
     if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {

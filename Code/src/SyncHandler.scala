@@ -42,12 +42,14 @@ object SyncHandler {
       println("SUCCESSFULLY REGISTERED AS REPLICA")
 
       val list = primaryCon.nextLine().split(":")(1).trim
-      val fileIds = list.split(",")
+      if(list.size > 0) {
+        val fileIds = list.split(",")
 
-      for(fileId <- fileIds) {
-        syncFile(fileId, primaryCon)
+        for(fileId <- fileIds) {
+          syncFile(fileId, primaryCon)
+        }
+        println("SYNC COMPLETE, ALL FILES UP TO DATE")
       }
-      println("SYNC COMPLETE, ALL FILES UP TO DATE")
     } else {
       println("FAILED TO REGISTER AS REPLICA")
     }
