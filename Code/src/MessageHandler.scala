@@ -6,7 +6,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   //enum of message types
   private object MessageType extends Enumeration {
     type MessageType = Value
-    val ReadFileRequest, WriteFileRequest, Error, Helo, Kill, FileIDList, FileHash, RegisterReplica, Ping = Value
+    val  Error, Helo, Kill, LogonRequest = Value
   }
 
   /**
@@ -21,13 +21,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
       case MessageType.Helo => handleHeloMessage(firstLine)
       case MessageType.Kill => handleKillMessage()
 
-      case MessageType.ReadFileRequest => handleReadFileMessage(firstLine)
-      case MessageType.WriteFileRequest => handleWriteFileMessage(firstLine)
-
-      case MessageType.FileIDList => handleFileIDListMessage(firstLine)
-      case MessageType.FileHash => handleFileHashMessage(firstLine)
-      case MessageType.RegisterReplica => handleReplicaRegistration(firstLine)
-      case MessageType.Ping => handlePingMessage(firstLine)
+      case MessageType.LogonRequest => handleLogonRequest(firstLine)
 
 
       case MessageType.Error => handleUnknownPacket(firstLine)
@@ -45,12 +39,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   private def getMessageType(firstLine: String): MessageType = {
     if(firstLine.startsWith("HELO")) return MessageType.Helo
     if(firstLine.startsWith("KILL_SERVICE")) return MessageType.Kill
-    if(firstLine.startsWith("READ_FILE")) return MessageType.ReadFileRequest
-    if(firstLine.startsWith("WRITE_FILE")) return MessageType.WriteFileRequest
-    if(firstLine.startsWith("REQUEST_FILE_IDS")) return MessageType.FileIDList
-    if(firstLine.startsWith("REQUEST_FILE_HASH")) return MessageType.FileHash
-    if(firstLine.startsWith("REGISTER_REPLICA_IP")) return MessageType.RegisterReplica
-    if(firstLine.startsWith("PING")) return MessageType.Ping
+    if(firstLine.startsWith("USERNAME")) return MessageType.LogonRequest
 
     MessageType.Error
   }
@@ -84,51 +73,12 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
   }
 
 
-  /**
-   * Handles requests from connections to read from a file
-   * @param firstLine - firstLine of request message
-   */
-  private def handleReadFileMessage(firstLine: String): Unit = {
-    val fileIdentifier = firstLine.split(":")(1).trim
-    FileHandler.sendFileToConnection(connection, fileIdentifier)
-  }
 
-
-  /**
-   * Handles request from connections to write to a file
-   * @param firstLine - file line of the request message
-   */
-  private def handleWriteFileMessage(firstLine: String): Unit = {
-    val fileIdentifier = firstLine.split(":")(1).trim
-    val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
-    FileHandler.saveFile(connection, length, fileIdentifier, serverUtility)
-  }
-
-
-  private def handleFileIDListMessage(firstLine: String): Unit = {
-    FileHandler.sendFileListToConnection(connection)
-  }
-
-
-  private def handleFileHashMessage(firstLine: String): Unit = {
-    val fileIdentifier = firstLine.split(":")(1).trim
-    FileHandler.sendHashToConnection(connection, fileIdentifier)
-  }
-
-  private def handleReplicaRegistration(firstLine: String): Unit = {
-    val replicaIP = firstLine.split(":")(1).trim
-    val replicaPort = connection.nextLine().split(":")(1).trim
-    val replicaAddress = new NodeAddress(replicaIP, replicaPort)
-
-    connection.nextLine() //clear this nodes IP
-    connection.nextLine() //clear this nodes port
-
-    serverUtility.addReplicaServer(replicaAddress)
-    connection.sendMessage(new RegisterResponseMessage)
-  }
-
-
-  private def handlePingMessage(firstLine: String): Unit = {
-    connection.sendMessage(new PongMessage)
+  private def handleLogonRequest(firstLine: String): Unit = {
+    val username = firstLine.split(":")(1).trim
+    val encryptedPassphrase = connection.nextLine().split(":")(1).trim
+    val serverIP = connection.nextLine().split(":")(1).trim
+    val serverPort = connection.nextLine().split(":")(1).trim
+    EncryptionHandler.replyWithToken(connection, username, encryptedPassphrase, serverIP, serverPort)
   }
 }

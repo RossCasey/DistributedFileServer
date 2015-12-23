@@ -16,11 +16,6 @@ trait ChatServerUtility {
   def getPort: String
   def execute(x: Runnable): Unit
   def killServer(): Unit
-  def getType: String
-  def getDirectoryServer: NodeAddress
-  def getPrimaryServer: NodeAddress
-  def getReplicaServers: Array[NodeAddress]
-  def addReplicaServer(replica: NodeAddress): Unit
 }
 
 
@@ -34,29 +29,15 @@ object ChatServer extends ChatServerUtility {
   var threadPool: ExecutorService = null
   var portNumber: Int = -1
 
-  var nodeType: String = ""
-  var directoryServer: NodeAddress = null
-  var primaryServer: NodeAddress = null
-
-  var replicaServers = ListBuffer[NodeAddress]()
-
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
     startServer(args)
-    setupFileDirectory()
-
-    if(nodeType == "REPLICA") {
-      syncWithPrimary()
-    }
-    notifyDirectory()
-
 
     var exit = false
     while(!exit) {
       try {
         val s = serverSocket.accept()
         println("Connection accepted")
-
 
         val newConnection = new Connection(computeNextId(), s)
         execute(new ConnectionInputListener(newConnection, this))
@@ -83,15 +64,7 @@ object ChatServer extends ChatServerUtility {
       serverSocket = new ServerSocket(portNumber)
       threadPool = Executors.newFixedThreadPool(32)
 
-      directoryServer = new NodeAddress(args(1), args(2))
-      nodeType = args(3)
-
-      if(nodeType == "REPLICA") {
-        primaryServer = new NodeAddress(args(4), args(5))
-      }
-
-
-      println("Listening on port " + portNumber + ": ")
+      println("Authentication Server listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {
         println("SERVER ERROR: " + e.getClass + ": " + e.getMessage)
@@ -99,30 +72,6 @@ object ChatServer extends ChatServerUtility {
       }
     }
   }
-
-  def notifyDirectory(): Unit = {
-    val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
-
-    if(nodeType == "PRIMARY") {
-      directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
-    } else {
-      directoryConnection.sendMessage(new RegisterReplicaMessage(getIP, getPort, primaryServer.getIP, primaryServer.getPort))
-    }
-
-
-    val firstLine = directoryConnection.nextLine()
-    if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {
-      println("Registration with directory server successful")
-    } else {
-      println("Error registering with directory server")
-    }
-  }
-
-
-  def syncWithPrimary(): Unit = {
-    SyncHandler.syncWithPrimary(primaryServer, this)
-  }
-
 
 
   /**
@@ -158,74 +107,10 @@ object ChatServer extends ChatServerUtility {
   }
 
 
-  /**
-   * Opens file
-   */
-  def openFile(): Unit = {
-    val byteArray = Files.readAllBytes(Paths.get("./start.sh"))
-
-    println(byteArray.length)
-    //val path = Paths.get("./")
-
-    val directory = new File("./")
-    val files = directory.listFiles  // this is File[]
-    val dirNames = ArrayBuffer[String]()
-    for (file <- files) {
-      if (file.isFile) {
-        dirNames += file.getName
-        println(file.getName)
-      }
-    }
-
-  }
-
-
-  def setupFileDirectory(): Unit = {
-    val dir = new File("../Files");
-    if(!dir.exists()) {
-      println("Files directory does not exist. Creating one now...")
-      dir.mkdir()
-    } else {
-      println("Files directory already exists.")
-    }
-  }
-
   var connectionId = 0
   private def computeNextId(): Int = {
     val newId = connectionId
     connectionId += 1
     newId
-  }
-
-
-  def getType: String = {
-    nodeType
-  }
-
-
-  def getPrimaryServer: NodeAddress = {
-    primaryServer
-  }
-
-  def getDirectoryServer: NodeAddress = {
-    directoryServer
-  }
-
-
-  def addReplicaServer(replica: NodeAddress): Unit = {
-    var alreadyAdded = false
-    for(existingReplica <- replicaServers) {
-      if(existingReplica.getIP == replica.getIP && existingReplica.getPort == replica.getPort) {
-        alreadyAdded = true
-      }
-    }
-
-    if(!alreadyAdded) {
-      replicaServers += replica
-    }
-  }
-
-  def getReplicaServers(): Array[NodeAddress] = {
-    return replicaServers.toArray
   }
 }
