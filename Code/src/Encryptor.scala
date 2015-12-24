@@ -72,4 +72,9 @@ object Encryptor {
     val encryptedPassphrase = encrypt("PASSPHRASE".getBytes("UTF-8"), password)
     new LogonRequest(username, encryptedPassphrase, nodeAddress.getIP, nodeAddress.getPort)
   }
+
+  def createLogonMessage(nodeAddress: NodeAddress, username: String, password: String): ServerMessage = {
+    val encryptedPassphrase = encrypt("PASSPHRASE".getBytes("UTF-8"), password)
+    new LogonRequest(username, encryptedPassphrase, nodeAddress.getIP, nodeAddress.getPort)
+  }
 }

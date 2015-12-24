@@ -5,30 +5,48 @@ import java.net.Socket
  */
 object SyncHandler {
 
-  def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection, sessionKey: String): Unit = {
+  def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Unit = {
     println(s"Getting copy of file $fileIdentifier from primary...")
-    connection.sendMessage(new RequestReadFileMessage(fileIdentifier))
 
-    connection.nextLine() //READING_LINE: [file id]
-    val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
+    val reqMessage = new RequestReadFileMessage(fileIdentifier)
+    val encReqMessage = Encryptor.encryptMessage(reqMessage, ticket, sessionKey)
+    connection.sendMessage(encReqMessage)
+
+    val dataLine = connection.nextLine().split(":")(1).trim
+    val ticketLine = connection.nextLine()    //don't care
+
+    val message = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
+    val messageLines = message.split("\n")
+
+    val length = Integer.parseInt(messageLines(1).split(":")(1).trim)
     FileHandler.saveFileWithoutSync(connection, length, fileIdentifier, sessionKey)
   }
 
 
-  def isFileUpToDate(fileIdentifier: String, connection: Connection): Boolean = {
+  def isFileUpToDate(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Boolean = {
     val hashOfLocalCopy = FileHandler.computeHash(fileIdentifier)
-    connection.sendMessage(new RequestFileHashMessage(fileIdentifier))
-    val primaryCopyHash = connection.nextLine().split(":")(1).trim
+
+    val reqMessage = new RequestFileHashMessage(fileIdentifier)
+    val encReqMessage = Encryptor.encryptMessage(reqMessage, ticket, sessionKey)
+    connection.sendMessage(encReqMessage)
+
+    val dataLine = connection.nextLine.split(":")(1).trim
+    val ticketLine = connection.nextLine() //don't care
+
+    val message = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
+    val messageLines = message.split("\n")
+
+    val primaryCopyHash = messageLines(0).split(":")(1).trim
 
     hashOfLocalCopy == primaryCopyHash
   }
 
 
-  def syncFile(fileIdentifier: String, connection: Connection, sessionKey: String): Unit = {
+  def syncFile(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Unit = {
     if(!FileHandler.doesFileExist(fileIdentifier)) {
-      loadCopyOfFileFromPrimary(fileIdentifier, connection, sessionKey)
-    } else if(!isFileUpToDate(fileIdentifier, connection)) {
-      loadCopyOfFileFromPrimary(fileIdentifier, connection, sessionKey)
+      loadCopyOfFileFromPrimary(fileIdentifier, connection, ticket,sessionKey)
+    } else if(!isFileUpToDate(fileIdentifier, connection, ticket, sessionKey)) {
+      loadCopyOfFileFromPrimary(fileIdentifier, connection, ticket, sessionKey)
     }
   }
 
@@ -97,7 +115,7 @@ object SyncHandler {
           val fileIds = list.split(",")
 
           for(fileId <- fileIds) {
-            syncFile(fileId, primaryCon, sessionKey)
+            syncFile(fileId, primaryCon, ticket, sessionKey)
           }
           println("SYNC COMPLETE, ALL FILES UP TO DATE")
         }
