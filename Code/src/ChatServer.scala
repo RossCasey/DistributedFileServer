@@ -15,6 +15,10 @@ trait ChatServerUtility {
   def getPort: String
   def execute(x: Runnable): Unit
   def killServer(): Unit
+  def getAuthenticationServer: NodeAddress
+  def getKey: String
+  def getUsername: String
+  def getPassword: String
 }
 
 
@@ -27,6 +31,13 @@ object ChatServer extends ChatServerUtility {
   var serverSocket: ServerSocket = null
   var threadPool: ExecutorService = null
   var portNumber: Int = -1
+
+  var authenticationServer: NodeAddress = null
+
+  var password: String = "12345678"
+  var username: String = "rcasey"
+  var key: String = "SuperSecretPassphrase"
+
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
@@ -112,5 +123,22 @@ object ChatServer extends ChatServerUtility {
     val newId = connectionId
     connectionId += 1
     newId
+  }
+
+
+  def getAuthenticationServer: NodeAddress = {
+    authenticationServer
+  }
+
+  def getPassword: String = {
+    password
+  }
+
+  def getUsername: String = {
+    username
+  }
+
+  def getKey: String = {
+    key
   }
 }

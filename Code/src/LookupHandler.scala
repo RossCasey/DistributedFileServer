@@ -9,19 +9,23 @@ object LookupHandler {
 
 
 
-  def lookupForRead(path: String, connection: Connection): Unit = {
+  def lookupForRead(path: String, connection: Connection, sessionKey: String): Unit = {
     val lookupResult = lookupTable.findEntryWithPath(path)
     if(lookupResult == null) {
       //send error if file not found
-      connection.sendError(ErrorList.fileNotFound)
+      val encPacket = Encryptor.encryptError(ErrorList.fileNotFound, "", sessionKey)
+      connection.sendMessage(encPacket)
     } else {
       val readableNode = nodeTable.getReadableNode(lookupResult.getNodeId)
-      connection.sendMessage(new LookupResultMessage(lookupResult.getFileId, readableNode.getIp, readableNode.getPort))
+
+      val result = new LookupResultMessage(lookupResult.getFileId, readableNode.getIp, readableNode.getPort)
+      val encPacket = Encryptor.encryptMessage(result, "", sessionKey)
+      connection.sendMessage(encPacket)
     }
   }
 
 
-  def lookupForWrite(path: String, connection: Connection): Unit = {
+  def lookupForWrite(path: String, connection: Connection, sessionKey: String): Unit = {
     var lookupResult = lookupTable.findEntryWithPath(path)
     if(lookupResult == null) {
       //if the file does not exist it will be written to one of the primaries
@@ -33,32 +37,36 @@ object LookupHandler {
 
     val writableNode = nodeTable.getWritableNodeWithId(lookupResult.getNodeId)
 
-
-    connection.sendMessage(new LookupResultMessage(lookupResult.getFileId, writableNode.getIp, writableNode.getPort))
+    val result = new LookupResultMessage(lookupResult.getFileId, writableNode.getIp, writableNode.getPort)
+    val encPacket = Encryptor.encryptMessage(result, "", sessionKey)
+    connection.sendMessage(encPacket)
   }
 
 
-  def registerPrimary(connection: Connection, ip: String, port: String): Unit = {
+  def registerPrimary(connection: Connection, ip: String, port: String, sessionKey: String): Unit = {
     if(!nodeTable.addPrimary(ip, port)) {
-      connection.sendError(ErrorList.nodeAlreadyExists)
+      val encPacket = Encryptor.encryptError(ErrorList.nodeAlreadyExists, "", sessionKey)
+      connection.sendMessage(encPacket)
       println(nodeTable.toString)
     } else {
-      connection.sendMessage(new RegisterResponseMessage)
+      val encPacket = Encryptor.encryptMessage(new RegisterResponseMessage, "", sessionKey)
+      connection.sendMessage(encPacket)
     }
   }
 
-  def registerReplica(connection: Connection, primaryIP: String, primaryPort: String, replicaIP: String, replicaPort: String): Unit = {
+  def registerReplica(connection: Connection, primaryIP: String, primaryPort: String, replicaIP: String, replicaPort: String, sessionKey: String): Unit = {
     val primary = nodeTable.findNode(primaryIP, primaryPort)
     if(primary == null) {
-      connection.sendError(ErrorList.nodeNotFound)
+      val encPacket = Encryptor.encryptError(ErrorList.nodeNotFound, "", sessionKey)
+      connection.sendMessage(encPacket)
     } else {
       if(!nodeTable.addReplica(primary.getId, replicaIP, replicaPort)) {
-        connection.sendError(ErrorList.nodeAlreadyExists)
+        val encPacket = Encryptor.encryptError(ErrorList.nodeAlreadyExists, "", sessionKey)
+        connection.sendMessage(encPacket)
       } else {
-        connection.sendMessage(new RegisterResponseMessage)
+        val encPacket = Encryptor.encryptMessage(new RegisterResponseMessage, "", sessionKey)
+        connection.sendMessage(encPacket)
       }
     }
-
   }
-
 }
