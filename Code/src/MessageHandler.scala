@@ -23,9 +23,7 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
 
       case MessageType.LogonRequest => handleLogonRequest(firstLine)
 
-
       case MessageType.Error => handleUnknownPacket(firstLine)
-
     }
   }
 
@@ -60,6 +58,8 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
    * @param firstLine - first line of helo message
    */
   private def handleHeloMessage(firstLine: String): Unit = {
+    println("HANDLING HELO MESSAGE REQUEST FOR CONNECTION " + connection.getId)
+
     val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
     connection.sendMessage(new HeloReplyMessage(firstLine, serverUtility.getIP, serverUtility.getPort, id))
   }
@@ -69,12 +69,16 @@ class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
    * Handles a Kill server message sent by user
    */
   private def handleKillMessage(): Unit = {
+    println("HANDLING KILL SERVER REQUEST FOR CONNECTION " + connection.getId)
+
     serverUtility.killServer
   }
 
 
 
   private def handleLogonRequest(firstLine: String): Unit = {
+    println("HANDLING LOGON REQUEST FOR CONNECTION " + connection.getId)
+
     val username = firstLine.split(":")(1).trim
     val encryptedPassphrase = connection.nextLine().split(":")(1).trim
     val serverIP = connection.nextLine().split(":")(1).trim

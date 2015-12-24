@@ -71,22 +71,25 @@ object EncryptionHandler {
 
 
   def replyWithToken(connection: Connection, username: String, encryptedPassphrase: String, serverIP: String, serverPort: String): Unit = {
-    val password = users.findPasswordForUsername(username)
-    if(isPasswordCorrect(password, encryptedPassphrase)) {
-      val plainToken = generateToken(serverIP, serverPort)
-      println(plainToken)
-      val encryptedToken = Encryptor.encrypt(plainToken.getBytes(), password)
-      println(encryptedToken)
-      val message = new EncryptedMessage(encryptedToken, "")  //no ticket necessary for client
-      connection.sendMessage(message)
-    } else {
-      connection.sendError(ErrorList.accessDenied)
+    this.synchronized {
+      val password = users.findPasswordForUsername(username)
+      if(isPasswordCorrect(password, encryptedPassphrase)) {
+        val plainToken = generateToken(serverIP, serverPort)
+        println(plainToken)
+        val encryptedToken = Encryptor.encrypt(plainToken.getBytes(), password)
+        println(encryptedToken)
+        val message = new EncryptedMessage(encryptedToken, "")  //no ticket necessary for client
+        connection.sendMessage(message)
+      } else {
+        connection.sendError(ErrorList.accessDenied)
+      }
     }
   }
 
 
   def addUser(username: String, password: String): Unit = {
-    users.add(username, password)
+    this.synchronized {
+      users.add(username, password)
+    }
   }
-
 }
