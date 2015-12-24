@@ -45,20 +45,39 @@ class NodeTable {
 
 
 
-  private def pingServer(ip: String, port: String): Boolean = {
+  private def pingServer(ip: String, port: String, serverUtility: ChatServerUtility): Boolean = {
     try {
-      lazy val socket = new Socket(InetAddress.getByName(ip), Integer.parseInt(port))
-      val connection = new Connection(0, socket)
-      socket.setSoTimeout(5000)
-      connection.sendMessage(new PingMessage)
+      val authNode = serverUtility.getAuthenticationServer
+      val authCon = new Connection(0, new Socket(authNode.getIP, Integer.parseInt(authNode.getPort)))
 
-      val response = connection.nextLine()
-      if(response.startsWith("PONG")) {
+      val node = new NodeAddress(ip, port)
+      val logonReq = Encryptor.createLogonMessage(node, serverUtility)
+      authCon.sendMessage(logonReq)
+
+      var dataLine = authCon.nextLine().split(":")(1).trim
+      var ticketLine = authCon.nextLine() //dont care
+
+      var decrypted = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
+      var messageLines = decrypted.split("\n")
+
+      val ticket = messageLines(0).split(":")(1).trim
+      val sessionKey = messageLines(1).split(":")(1).trim
+
+      val nodeSocket = new Socket(ip, Integer.parseInt(port))
+      nodeSocket.setSoTimeout(5000)
+      val nodeConnection = new Connection(1, nodeSocket)
+      val encPing = Encryptor.encryptMessage(new PingMessage, ticket, sessionKey)
+      nodeConnection.sendMessage(encPing)
+
+      dataLine = nodeConnection.nextLine().split(":")(1).trim
+      ticketLine = nodeConnection.nextLine() //dont care
+
+      decrypted = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
+      if(decrypted.contains("PONG")) {
         return true
       } else {
         return false
       }
-
     } catch {
       case e: Exception => {
         return false
@@ -95,7 +114,7 @@ class NodeTable {
   }
 
 
-  def getReadableNode(id: String): NodeTableEntry = {
+  def getReadableNode(id: String, serverUtility: ChatServerUtility): NodeTableEntry = {
     //get all nodes with the correct id
     var nodes = ListBuffer[NodeTableEntry]()
     for(entry <- entries) {
