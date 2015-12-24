@@ -83,6 +83,7 @@ object EncryptionHandler {
       } else {
         connection.sendError(ErrorList.accessDenied)
       }
+      connection.close()
     }
   }
 
