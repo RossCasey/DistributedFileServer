@@ -14,21 +14,54 @@ object FileHandler {
     byteArray
   }
 
-  def sendFileToConnection(connection: Connection, fileIdentifier: String): Unit = {
+  def sendFileToConnection(connection: Connection, fileIdentifier: String, key: String): Unit = {
     val file = getFile(fileIdentifier)
+    val encryptedFile = Encryptor.encrypt(file, key)
 
-    connection.sendMessage(new ReadingFileMessage(fileIdentifier, file.length))
-    connection.sendBytes(file)
+    val readFileMessage = new ReadingFileMessage(fileIdentifier, encryptedFile.length)
+    val encrypedReadFileMessage = Encryptor.encryptMessage(readFileMessage, "", key)
+    connection.sendMessage(encrypedReadFileMessage)
+    connection.sendBytes(encryptedFile.getBytes)
+  }
+
+
+  private def getToken(node: NodeAddress, serverUtility: ChatServerUtility): Array[String] = {
+    try {
+      val authServer = serverUtility.getAuthenticationServer
+      val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
+      val logonMessage = Encryptor.createLogonMessage(node, serverUtility)
+      asCon.sendMessage(logonMessage)
+
+      val dataLine = asCon.nextLine().split(":")(1).trim
+      val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
+
+      val decrypedToken = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
+      decrypedToken.split("\n")
+    } catch {
+      case e: Exception => {
+        null
+      }
+    }
   }
 
 
 
-  private def copyFileToReplica(fileIdentifier: String, replica: NodeAddress): Unit = {
+
+
+  private def copyFileToReplica(fileIdentifier: String, replica: NodeAddress, serverUtility: ChatServerUtility): Unit = {
     try {
+      val token = getToken(replica, serverUtility)
+      val sessionKey = token(1).split(":")(1).trim
+      val ticket = token(0).split(":")(1).trim
+
+
       val repCon = new Connection(0, new Socket(replica.getIP, Integer.parseInt(replica.getPort)))
-      val file = getFile(fileIdentifier)
-      repCon.sendMessage(new WriteFileMessage(fileIdentifier, file.length))
-      repCon.sendBytes(file)
+      val encryptedFile = Encryptor.encrypt(getFile(fileIdentifier), sessionKey)
+
+      val writeFileMessage = new WriteFileMessage(fileIdentifier, encryptedFile.length)
+      val encryptedWriteFileMessage = Encryptor.encryptMessage(writeFileMessage, ticket,sessionKey)
+
+      repCon.sendBytes(encryptedFile.getBytes("UTF-8"))
     } catch {
       case e: Exception => {
         println(s"FAILED TO COPY FILL TO REPLICA " + replica.getIP + "/" + replica.getPort)
@@ -37,14 +70,14 @@ object FileHandler {
   }
 
 
-  private def copyFileToAllReplicas(fileIdentifier: String, replicas: Array[NodeAddress]): Unit = {
+  private def copyFileToAllReplicas(fileIdentifier: String, replicas: Array[NodeAddress], serverUtility: ChatServerUtility): Unit = {
     for(replica <- replicas) {
-      copyFileToReplica(fileIdentifier, replica)
+      copyFileToReplica(fileIdentifier, replica, serverUtility)
     }
   }
 
 
-  def saveFile(connection: Connection, length: Int, fileIdentifier: String, serverUtility: ChatServerUtility): Unit = {
+  def saveFile(connection: Connection, length: Int, fileIdentifier: String, serverUtility: ChatServerUtility, sessionKey: String): Unit = {
     var count = length
     val baos = new ByteArrayOutputStream()
 
@@ -55,17 +88,21 @@ object FileHandler {
     val fos = new FileOutputStream(base + fileIdentifier)
     val bos = new BufferedOutputStream(fos)
 
-    bos.write(baos.toByteArray)
+
+    val encryptedFile = baos.toString("UTF-8")
+    val decryptedFile = Encryptor.decrypt(encryptedFile, sessionKey)
+
+    bos.write(decryptedFile)
     bos.flush()
     bos.close()
     fos.close()
 
     if(serverUtility.getType == "PRIMARY") {
-      copyFileToAllReplicas(fileIdentifier, serverUtility.getReplicaServers)
+      copyFileToAllReplicas(fileIdentifier, serverUtility.getReplicaServers, serverUtility)
     }
   }
 
-  def saveFileWithoutSync(connection: Connection, length: Int, fileIdentifier: String): Unit = {
+  def saveFileWithoutSync(connection: Connection, length: Int, fileIdentifier: String, sessionKey: String): Unit = {
     var count = length
     val baos = new ByteArrayOutputStream()
 
@@ -76,7 +113,10 @@ object FileHandler {
     val fos = new FileOutputStream(base + fileIdentifier)
     val bos = new BufferedOutputStream(fos)
 
-    bos.write(baos.toByteArray)
+    val encryptedFile = baos.toString("UTF-8")
+    val decryptedFile = Encryptor.decrypt(encryptedFile, sessionKey)
+
+    bos.write(decryptedFile)
     bos.flush()
     bos.close()
     fos.close()
@@ -95,8 +135,11 @@ object FileHandler {
   }
 
 
-  def sendFileListToConnection(connection: Connection): Unit = {
-    connection.sendMessage(new FileIDsResponseMessage(computeFileList()))
+  def sendFileListToConnection(connection: Connection, sessionKey: String): Unit = {
+    val fileIdMessage = new FileIDsResponseMessage(computeFileList())
+    val encryptedMessage = Encryptor.encryptMessage(fileIdMessage, "", sessionKey)
+
+    connection.sendMessage(encryptedMessage)
   }
 
 
@@ -107,9 +150,12 @@ object FileHandler {
   }
 
 
-  def sendHashToConnection(connection: Connection, fileIdentifier: String): Unit = {
+  def sendHashToConnection(connection: Connection, fileIdentifier: String, sessionKey: String): Unit = {
     val hash = computeHash(fileIdentifier)
-    connection.sendMessage(new FileHashResponseMessage(hash))
+    val hashMessage = new FileHashResponseMessage(hash)
+    val encrypedMessage = Encryptor.encryptMessage(hashMessage, "", sessionKey)
+
+    connection.sendMessage(encrypedMessage)
   }
 
   def doesFileExist(fileIdentifier: String): Boolean = {

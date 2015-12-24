@@ -19,8 +19,12 @@ trait ChatServerUtility {
   def getType: String
   def getDirectoryServer: NodeAddress
   def getPrimaryServer: NodeAddress
+  def getAuthenticationServer: NodeAddress
   def getReplicaServers: Array[NodeAddress]
   def addReplicaServer(replica: NodeAddress): Unit
+  def getKey: String
+  def getUsername: String
+  def getPassword: String
 }
 
 
@@ -37,6 +41,10 @@ object ChatServer extends ChatServerUtility {
   var nodeType: String = ""
   var directoryServer: NodeAddress = null
   var primaryServer: NodeAddress = null
+  var authenticationServer: NodeAddress = new NodeAddress("localhost", 9000.toString)
+
+  var username: String = "rcasey"
+  var password: String = "12345678"
 
   var replicaServers = ListBuffer[NodeAddress]()
 
@@ -225,7 +233,23 @@ object ChatServer extends ChatServerUtility {
     }
   }
 
-  def getReplicaServers(): Array[NodeAddress] = {
-    return replicaServers.toArray
+  def getReplicaServers: Array[NodeAddress] = {
+    replicaServers.toArray
+  }
+
+  def getKey: String = {
+    "SuperSecretPassphrase"
+  }
+
+  def getAuthenticationServer: NodeAddress = {
+    authenticationServer
+  }
+
+  def getPassword: String = {
+    password
+  }
+
+  def getUsername: String = {
+    username
   }
 }

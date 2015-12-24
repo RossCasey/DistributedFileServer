@@ -5,13 +5,13 @@ import java.net.Socket
  */
 object SyncHandler {
 
-  def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection): Unit = {
+  def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection, sessionKey: String): Unit = {
     println(s"Getting copy of file $fileIdentifier from primary...")
     connection.sendMessage(new RequestReadFileMessage(fileIdentifier))
 
     connection.nextLine() //READING_LINE: [file id]
     val length = Integer.parseInt(connection.nextLine().split(":")(1).trim)
-    FileHandler.saveFileWithoutSync(connection, length, fileIdentifier)
+    FileHandler.saveFileWithoutSync(connection, length, fileIdentifier, sessionKey)
   }
 
 
@@ -24,34 +24,86 @@ object SyncHandler {
   }
 
 
-  def syncFile(fileIdentifier: String, connection: Connection): Unit = {
+  def syncFile(fileIdentifier: String, connection: Connection, sessionKey: String): Unit = {
     if(!FileHandler.doesFileExist(fileIdentifier)) {
-      loadCopyOfFileFromPrimary(fileIdentifier, connection)
+      loadCopyOfFileFromPrimary(fileIdentifier, connection, sessionKey)
     } else if(!isFileUpToDate(fileIdentifier, connection)) {
-      loadCopyOfFileFromPrimary(fileIdentifier, connection)
+      loadCopyOfFileFromPrimary(fileIdentifier, connection, sessionKey)
     }
   }
 
+  private def getToken(node: NodeAddress, serverUtility: ChatServerUtility): Array[String] = {
+    try {
+      val authServer = serverUtility.getAuthenticationServer
+      val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
+      val logonMessage = Encryptor.createLogonMessage(node, serverUtility)
+      asCon.sendMessage(logonMessage)
+
+      val dataLine = asCon.nextLine().split(":")(1).trim
+      val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
+
+      val decrypedToken = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
+      decrypedToken.split("\n")
+    } catch {
+      case e: Exception => {
+        null
+      }
+    }
+  }
+
+  def decryptMessage(encryptedMessage: String, key: String): Array[String] = {
+    try {
+      val decryptedMessage = Encryptor.decrypt(encryptedMessage, key)
+      val decryptedStr = new String(decryptedMessage, "UTF-8")
+      decryptedStr.split("\n")
+    } catch {
+      case e:Exception => {
+        null
+      }
+    }
+  }
 
   def syncWithPrimary(primary: NodeAddress, serverUtility: ChatServerUtility): Unit = {
-    val primaryCon = new Connection(0, new Socket(primary.getIP, Integer.parseInt(primary.getPort)))
-    primaryCon.sendMessage(new RegisterReplicaMessage(serverUtility.getIP, serverUtility.getPort, "", ""))
+    val token = getToken(primary, serverUtility)
+    if(token != null) {
+      val ticket = token(0).split(":")(1).trim
+      val sessionKey = token(1).split(":")(1).trim
 
-    primaryCon.sendMessage(new RequestFileIDsMessage)
-    if(primaryCon.nextLine() == "REGISTRATION_STATUS: OK") {
-      println("SUCCESSFULLY REGISTERED AS REPLICA")
 
-      val list = primaryCon.nextLine().split(":")(1).trim
-      if(list.size > 0) {
-        val fileIds = list.split(",")
+      val primaryCon = new Connection(0, new Socket(primary.getIP, Integer.parseInt(primary.getPort)))
+      val regRepMessage = new RegisterReplicaMessage(serverUtility.getIP, serverUtility.getPort, "","")
+      val encryptedMessage = Encryptor.encryptMessage(regRepMessage, ticket, sessionKey)
+      primaryCon.sendMessage(encryptedMessage)
 
-        for(fileId <- fileIds) {
-          syncFile(fileId, primaryCon)
+      var dataLine = primaryCon.nextLine().split(":")(1).trim
+      var ticketLine = primaryCon.nextLine()
+      var response = decryptMessage(dataLine, sessionKey)
+
+
+      if(response(0) == "REGISTRATION_STATUS: OK") {
+        println("SUCCESSFULLY REGISTERED AS REPLICA")
+
+        val reqList = new RequestFileIDsMessage
+        val encReqList = Encryptor.encryptMessage(reqList, ticket, sessionKey)
+        primaryCon.sendMessage(encReqList)
+
+        dataLine = primaryCon.nextLine().split(":")(1).trim
+        ticketLine = primaryCon.nextLine()
+        response = decryptMessage(dataLine, sessionKey)
+
+
+        val list = response(0).split(":")(1).trim
+        if(list.size > 0) {
+          val fileIds = list.split(",")
+
+          for(fileId <- fileIds) {
+            syncFile(fileId, primaryCon, sessionKey)
+          }
+          println("SYNC COMPLETE, ALL FILES UP TO DATE")
         }
-        println("SYNC COMPLETE, ALL FILES UP TO DATE")
+      } else {
+        println("FAILED TO REGISTER AS REPLICA")
       }
-    } else {
-      println("FAILED TO REGISTER AS REPLICA")
     }
   }
 }
