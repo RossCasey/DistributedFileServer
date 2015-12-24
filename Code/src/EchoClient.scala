@@ -21,8 +21,10 @@ object EchoClient {
 
 
     /*
+    val authNodeAddress = new NodeAddress("localhost", 9000.toString)
+
     val authCon = new Connection(2, new Socket(InetAddress.getByName("localhost"),9000))
-    val token = ServerMessageHandler.getTokenForServer(authCon, new NodeAddress("localhost", 9000.toString), "rcasey", "12345678")
+    val token = ServerMessageHandler.getTokenForServer(authNodeAddress, new NodeAddress("localhost", 8000.toString), "rcasey", "12345678")
 
     if(token != null) {
       println("got token")
@@ -55,15 +57,24 @@ object EchoClient {
       priCon.sendMessage(encryptedMeesage)
       priCon.sendBytes(encryptedFile.getBytes)
       println("send encrypted bytes")
+    } else {
+
+      println("token null")
     }
     */
+    
 
-    val testFile = new DistributedFile("test.txt", "rcasey", "12345678")
+
+    val testFile = new DistributedFile("test4.txt", "rcasey", "12345678")
 
 
-    var groundTruthFile = Files.readAllBytes(Paths.get("./test.txt"))
+    var groundTruthFile = Files.readAllBytes(Paths.get("./test4.txt"))
     testFile.open()
     var downloadedFile = testFile.getContents()
+    println("Length: "  + downloadedFile.length)
+    for(yoke <- downloadedFile) {
+      println(yoke)
+    }
 
     if(groundTruthFile.length != downloadedFile.length) {
       println("files are not the same length")

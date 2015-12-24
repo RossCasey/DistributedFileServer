@@ -31,6 +31,7 @@ object ServerMessageHandler {
     connection.sendMessage(encReqMessage)
 
     val response = handleEncryptedMessage(connection, sessionKey)
+
     if(!response(0).contains("ERROR")) {
       var count = Integer.parseInt(response(1).split(":")(1).trim)
 
@@ -71,7 +72,7 @@ object ServerMessageHandler {
 
       dict
     } else {
-      dict += "error" -> connection.nextLine().split(":")(1).trim
+      dict += "error" -> response(1).split(":")(1).trim
       dict
     }
   }

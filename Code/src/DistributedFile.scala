@@ -16,6 +16,8 @@ class DistributedFile(path: String, username: String, password: String) {
 
 
   private def downloadFile(node: NodeAddress, fileID: String): Unit = {
+    println("downloading file")
+
     val nodeToken = ServerMessageHandler.getTokenForServer(authServer, node, username, password)
     if(!nodeToken(0).contains("ERROR")) {
       val ticket = nodeToken(0).split(":")(1).trim
@@ -25,7 +27,12 @@ class DistributedFile(path: String, username: String, password: String) {
       val connection = new Connection(1, new Socket(node.getIP, Integer.parseInt(node.getPort)))
 
       val file = ServerMessageHandler.readFile(connection, fileID, ticket, sessionKey)
-      contents ++ file
+
+      println("File length in Dist: " + file.length)
+      for(byte <- file) {
+        contents += byte
+      }
+
     } else {
       println(nodeToken(1))
     }
@@ -33,6 +40,7 @@ class DistributedFile(path: String, username: String, password: String) {
 
 
   private def initialiseFile(): Unit = {
+    println("initialising file")
     //contact directory server -> check if file exists
     //if file exists:
     val dirToken = ServerMessageHandler.getTokenForServer(authServer, directoryServer, username, password)
