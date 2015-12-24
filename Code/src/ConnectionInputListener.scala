@@ -18,13 +18,13 @@ class ConnectionInputListener(connection: Connection, serverUtility: ChatServerU
           messageHandler.handleMessage()
           println("Finished handling new message on: " + connection.getId)
         }
-
         Thread.sleep(50)
       }
       println("Socket closing for " + connection.getId)
     } catch {
-      case e: SocketException => {
-        println("Socket closing due to error for " + connection.getId)
+      case e: java.io.IOException => {}
+      case e: Exception => {
+        e.printStackTrace()
       }
     }
   }
