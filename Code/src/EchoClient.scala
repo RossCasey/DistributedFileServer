@@ -20,7 +20,7 @@ object EchoClient {
     //test.close()
 
 
-
+    /*
     val authCon = new Connection(2, new Socket(InetAddress.getByName("localhost"),9000))
     val token = ServerMessageHandler.getTokenForServer(authCon, new NodeAddress("localhost", 9000.toString), "rcasey", "12345678")
 
@@ -56,6 +56,29 @@ object EchoClient {
       priCon.sendBytes(encryptedFile.getBytes)
       println("send encrypted bytes")
     }
+    */
+
+    val testFile = new DistributedFile("test.txt", "rcasey", "12345678")
+
+
+    var groundTruthFile = Files.readAllBytes(Paths.get("./test.txt"))
+    testFile.open()
+    var downloadedFile = testFile.getContents()
+
+    if(groundTruthFile.length != downloadedFile.length) {
+      println("files are not the same length")
+    } else {
+      println("files are same length")
+      for(i <- 0 to groundTruthFile.length - 1) {
+        print(groundTruthFile(i) + " = " + downloadedFile(i) + "    ")
+        if(groundTruthFile(i) == downloadedFile(i)) {
+          println("MATCH")
+        } else {
+          println("NOT A MATCH")
+        }
+      }
+    }
+
 
 
 

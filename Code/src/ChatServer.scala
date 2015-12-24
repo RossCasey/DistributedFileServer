@@ -91,11 +91,17 @@ object ChatServer extends ChatServerUtility {
       serverSocket = new ServerSocket(portNumber)
       threadPool = Executors.newFixedThreadPool(32)
 
-      directoryServer = new NodeAddress(args(1), args(2))
-      nodeType = args(3)
+
+      username = args(1)
+      password = args(2)
+
+      authenticationServer = new NodeAddress(args(3), args(4))
+      directoryServer = new NodeAddress(args(5), args(6))
+
+      nodeType = args(7)
 
       if(nodeType == "REPLICA") {
-        primaryServer = new NodeAddress(args(4), args(5))
+        primaryServer = new NodeAddress(args(8), args(9))
       }
 
 
@@ -199,27 +205,6 @@ object ChatServer extends ChatServerUtility {
     serverSocket.close()
   }
 
-
-  /**
-   * Opens file
-   */
-  def openFile(): Unit = {
-    val byteArray = Files.readAllBytes(Paths.get("./start.sh"))
-
-    println(byteArray.length)
-    //val path = Paths.get("./")
-
-    val directory = new File("./")
-    val files = directory.listFiles  // this is File[]
-    val dirNames = ArrayBuffer[String]()
-    for (file <- files) {
-      if (file.isFile) {
-        dirNames += file.getName
-        println(file.getName)
-      }
-    }
-
-  }
 
 
   def setupFileDirectory(): Unit = {

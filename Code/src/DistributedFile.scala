@@ -9,44 +9,50 @@ import scala.io.BufferedSource
 /**
  * Created by Ross on 12/12/15.
  */
-class DistributedFile(path: String) {
+class DistributedFile(path: String, username: String, password: String) {
   val contents: ListBuffer[Byte] = ListBuffer()
+  val authServer = new NodeAddress("localhost", "9000")
+  val directoryServer = new NodeAddress("localhost", "8000")
 
 
-  private def downloadFile(node: NodeAddress): Unit = {
-    lazy val socket = new Socket(InetAddress.getByName(node.getIP), Integer.parseInt(node.getPort))
-    val connection = new Connection(0, socket)
+  private def downloadFile(node: NodeAddress, fileID: String): Unit = {
+    val nodeToken = ServerMessageHandler.getTokenForServer(authServer, node, username, password)
+    if(!nodeToken(0).contains("ERROR")) {
+      val ticket = nodeToken(0).split(":")(1).trim
+      val sessionKey = nodeToken(1).split(":")(1).trim
 
-    var count = ServerMessageHandler.requestFile(connection, path)
-    val baos = new ByteArrayOutputStream()
+      //connect to node and download file
+      val connection = new Connection(1, new Socket(node.getIP, Integer.parseInt(node.getPort)))
 
-    while (count != 0) {
-      baos.write(connection.readByte())
-      count -= 1
+      val file = ServerMessageHandler.readFile(connection, fileID, ticket, sessionKey)
+      contents ++ file
+    } else {
+      println(nodeToken(1))
     }
-
-    for (f <- baos.toByteArray) {
-      contents += f
-    }
-    socket.close()
   }
 
 
   private def initialiseFile(): Unit = {
     //contact directory server -> check if file exists
     //if file exists:
-    val directoryIP = "localhost"
-    val directoryPort = 8000
+    val dirToken = ServerMessageHandler.getTokenForServer(authServer, directoryServer, username, password)
+    if(!dirToken(0).contains("ERROR")) {
+      val ticket = dirToken(0).split(":")(1).trim
+      val sessionKey = dirToken(1).split(":")(1).trim
 
+      //lookup file
+      val dirCon = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
+      val fileDetails = ServerMessageHandler.getNode(dirCon, path, ticket, sessionKey, true)
 
-    val connection = new Connection(0, new Socket(InetAddress.getByName(directoryIP), directoryPort))
-    val dict = ServerMessageHandler.getNode(connection, path, true)
+      if(fileDetails.contains("error")) {
+        println(fileDetails("error").asInstanceOf[String])
+        //init blank file
+      } else {
+        val nodeAddress = fileDetails("address").asInstanceOf[NodeAddress]
+        val fileID = fileDetails("id").asInstanceOf[String]
+        downloadFile(nodeAddress,fileID)
+      }
 
-    if(!dict.contains("error")) {
-      val nodeAddress = dict("address").asInstanceOf[NodeAddress]
-      downloadFile(nodeAddress)
-    } else {
-      //init a blank file
     }
   }
 
@@ -56,31 +62,53 @@ class DistributedFile(path: String) {
   }
 
 
+
+  private def uploadFile(node: NodeAddress, fileID: String): Unit = {
+    val nodeToken = ServerMessageHandler.getTokenForServer(authServer, node, username, password)
+    if(!nodeToken(0).contains("ERROR")) {
+      val ticket = nodeToken(0).split(":")(1).trim
+      val sessionKey = nodeToken(1).split(":")(1).trim
+
+      //connect to node and download file
+      val connection = new Connection(1, new Socket(node.getIP, Integer.parseInt(node.getPort)))
+
+      ServerMessageHandler.writeFile(connection, fileID, ticket, sessionKey, contents.toArray )
+    } else {
+      println(nodeToken(1))
+    }
+  }
+
+
+
+  private def prepareToWriteFile(): Unit = {
+    val dirToken = ServerMessageHandler.getTokenForServer(authServer, directoryServer, username, password)
+    if(!dirToken(0).contains("ERROR")) {
+      val ticket = dirToken(0).split(":")(1).trim
+      val sessionKey = dirToken(1).split(":")(1).trim
+
+      //lookup file
+      val dirCon = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
+      val fileDetails = ServerMessageHandler.getNode(dirCon, path, ticket, sessionKey, false)
+
+      if(fileDetails.contains("error")) {
+        println(fileDetails("error").asInstanceOf[String])
+      } else {
+        val nodeAddress = fileDetails("address").asInstanceOf[NodeAddress]
+        val fileID = fileDetails("id").asInstanceOf[String]
+        uploadFile(nodeAddress,fileID)
+      }
+
+    }
+  }
+
+
   def close(): Unit = {
-    var asByteArray = contents.toArray
-
-    lazy val socket = new Socket(InetAddress.getByName("localhost"),8004)
-    val connection = new Connection(0, socket)
-
-    ServerMessageHandler.sendUploadRequest(connection, "testFile2.png", asByteArray.length)
-    connection.sendBytes(asByteArray)
-    socket.close()
+    prepareToWriteFile()
   }
 
 
   def read(startPosition: Int, length: Int): Unit = {
     //TO-DO
-
-
-    /*
-    val readArray = Array.ofDim[Byte](length)
-
-    for( i <- 0 to length) {
-      readArray(i) = contents(i + startPosition)
-    }
-    readArray
-    */
-
   }
 
 
@@ -93,5 +121,9 @@ class DistributedFile(path: String) {
     for(byte <- contents) {
       println(byte)
     }
+  }
+
+  def getContents(): Array[Byte] = {
+    contents.toArray
   }
 }
