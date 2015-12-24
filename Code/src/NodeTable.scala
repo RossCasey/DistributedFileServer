@@ -143,7 +143,7 @@ class NodeTable {
     if(replicas.nonEmpty) {
       Random.shuffle(replicas)
       for(replica <- replicas) {
-        if(pingServer(replica.getIp, replica.getPort)) {
+        if(pingServer(replica.getIp, replica.getPort, serverUtility)) {
           return replica
         }
       }

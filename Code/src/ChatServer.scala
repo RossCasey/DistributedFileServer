@@ -42,6 +42,7 @@ object ChatServer extends ChatServerUtility {
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
     startServer(args(0))
+    LookupHandler.serverUtility = this
 
 
     var exit = false

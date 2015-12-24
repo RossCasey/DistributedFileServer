@@ -6,6 +6,7 @@ import java.net.{InetAddress, Socket}
 object LookupHandler {
   var lookupTable = new LookupTable()
   var nodeTable = new NodeTable()
+  var serverUtility: ChatServerUtility = null
 
 
 
@@ -16,7 +17,7 @@ object LookupHandler {
       val encPacket = Encryptor.encryptError(ErrorList.fileNotFound, "", sessionKey)
       connection.sendMessage(encPacket)
     } else {
-      val readableNode = nodeTable.getReadableNode(lookupResult.getNodeId)
+      val readableNode = nodeTable.getReadableNode(lookupResult.getNodeId, serverUtility)
 
       val result = new LookupResultMessage(lookupResult.getFileId, readableNode.getIp, readableNode.getPort)
       val encPacket = Encryptor.encryptMessage(result, "", sessionKey)
