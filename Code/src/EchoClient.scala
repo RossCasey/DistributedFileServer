@@ -31,7 +31,7 @@ object EchoClient {
 
       val dirCon = new Connection(3, new Socket(InetAddress.getByName("localhost"), 8000))
 
-      val lookupMessage = new LookupMessage("test3.txt", false)
+      val lookupMessage = new LookupMessage("test4.txt", false)
       val encLookupMessage = Encryptor.encryptMessage(lookupMessage, ticket, sessionKey)
       dirCon.sendMessage(encLookupMessage)
 
@@ -50,7 +50,7 @@ object EchoClient {
       val priCon = new Connection(4, new Socket(InetAddress.getByName(ipAddress), Integer.parseInt(port)))
 
 
-      val encryptedFile = Encryptor.encrypt(Files.readAllBytes(Paths.get("./test3.txt")), sessionKey)
+      val encryptedFile = Encryptor.encrypt(Files.readAllBytes(Paths.get("./test4.txt")), sessionKey)
       val encryptedMeesage = Encryptor.encryptMessage(new WriteFileMessage(fileID, encryptedFile.length), ticket, sessionKey)
       priCon.sendMessage(encryptedMeesage)
       priCon.sendBytes(encryptedFile.getBytes)

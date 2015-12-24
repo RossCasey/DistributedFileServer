@@ -61,6 +61,7 @@ object FileHandler {
       val writeFileMessage = new WriteFileMessage(fileIdentifier, encryptedFile.length)
       val encryptedWriteFileMessage = Encryptor.encryptMessage(writeFileMessage, ticket,sessionKey)
 
+      repCon.sendMessage(encryptedWriteFileMessage)
       repCon.sendBytes(encryptedFile.getBytes("UTF-8"))
     } catch {
       case e: Exception => {
