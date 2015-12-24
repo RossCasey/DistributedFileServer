@@ -62,7 +62,7 @@ object EchoClient {
       println("token null")
     }
     */
-    
+
 
 
     val testFile = new DistributedFile("test4.txt", "rcasey", "12345678")
