@@ -108,21 +108,55 @@ object ChatServer extends ChatServerUtility {
     }
   }
 
-  def notifyDirectory(): Unit = {
-    val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
 
-    if(nodeType == "PRIMARY") {
-      directoryConnection.sendMessage(new RegisterPrimaryMessage(getIP, getPort))
-    } else {
-      directoryConnection.sendMessage(new RegisterReplicaMessage(getIP, getPort, primaryServer.getIP, primaryServer.getPort))
+  private def getToken(node: NodeAddress, serverUtility: ChatServerUtility): Array[String] = {
+    try {
+      val authServer = serverUtility.getAuthenticationServer
+      val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
+      val logonMessage = Encryptor.createLogonMessage(node, serverUtility)
+      asCon.sendMessage(logonMessage)
+
+      val dataLine = asCon.nextLine().split(":")(1).trim
+      val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
+
+      val decrypedToken = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
+      decrypedToken.split("\n")
+    } catch {
+      case e: Exception => {
+        null
+      }
     }
+  }
 
+  def notifyDirectory(): Unit = {
+    val token = getToken(directoryServer, this)
+    if(token != null) {
+      val ticket = token(0).split(":")(1).trim
+      val sessionKey = token(1).split(":")(1).trim
+      val directoryConnection = new Connection(0, new Socket(directoryServer.getIP, Integer.parseInt(directoryServer.getPort)))
 
-    val firstLine = directoryConnection.nextLine()
-    if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {
-      println("Registration with directory server successful")
+      if(nodeType == "PRIMARY") {
+        val message = new RegisterPrimaryMessage(getIP, getPort)
+        val encMessage = Encryptor.encryptMessage(message, ticket, sessionKey)
+        directoryConnection.sendMessage(encMessage)
+      } else {
+        val message = new RegisterReplicaMessage(getIP, getPort, primaryServer.getIP, primaryServer.getPort)
+        val encMessage = Encryptor.encryptMessage(message, ticket, sessionKey)
+        directoryConnection.sendMessage(encMessage)
+      }
+
+      val dataLine = directoryConnection.nextLine().split(":")(1).trim
+      val ticketLine = directoryConnection.nextLine() //dont care
+
+      val response = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
+      val firstLine = response
+      if(firstLine.startsWith("ERROR_CODE: 3") || firstLine.startsWith("REGISTRATION_STATUS: OK")) {
+        println("Registration with directory server successful")
+      } else {
+        println("Error registering with directory server")
+      }
     } else {
-      println("Error registering with directory server")
+      println("Error authenticating for communication with directory server")
     }
   }
 
