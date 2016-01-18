@@ -41,10 +41,10 @@ object ChatServer extends ChatServerUtility {
   var nodeType: String = ""
   var directoryServer: NodeAddress = null
   var primaryServer: NodeAddress = null
-  var authenticationServer: NodeAddress = new NodeAddress("localhost", 9000.toString)
+  var authenticationServer: NodeAddress = null
 
-  var username: String = "rcasey"
-  var password: String = "12345678"
+  var username: String = null
+  var password: String = null
 
   var replicaServers = ListBuffer[NodeAddress]()
 
@@ -89,13 +89,17 @@ object ChatServer extends ChatServerUtility {
     try {
       portNumber = Integer.parseInt(args(0))
       serverSocket = new ServerSocket(portNumber)
-      threadPool = Executors.newFixedThreadPool(32)
+      threadPool = Executors.newFixedThreadPool(256)
 
-      directoryServer = new NodeAddress(args(1), args(2))
-      nodeType = args(3)
+      username = args(1)
+      password = args(2)
+
+      authenticationServer = new NodeAddress(args(3), args(4))
+      directoryServer = new NodeAddress(args(5), args(6))
+      nodeType = args(7)
 
       if(nodeType == "REPLICA") {
-        primaryServer = new NodeAddress(args(4), args(5))
+        primaryServer = new NodeAddress(args(8), args(9))
       }
 
 

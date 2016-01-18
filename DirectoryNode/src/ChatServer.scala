@@ -41,7 +41,7 @@ object ChatServer extends ChatServerUtility {
 
   def main(args: Array[String]) {
     //attempt to create a server socket, exit otherwise
-    startServer(args(0))
+    startServer(args)
     LookupHandler.serverUtility = this
 
 
@@ -69,13 +69,20 @@ object ChatServer extends ChatServerUtility {
 
   /**
    * Attempts to start server on specified port
-   * @param port - port to run server on
+   * @param args - command line arguments
    */
-  def startServer(port: String): Unit = {
+  def startServer(args: Array[String]): Unit = {
     try {
-      portNumber = Integer.parseInt(port)
+      portNumber = Integer.parseInt(args(0))
       serverSocket = new ServerSocket(portNumber)
-      threadPool = Executors.newFixedThreadPool(32)
+      threadPool = Executors.newFixedThreadPool(256)
+
+      username = args(1)
+      password = args(2)
+
+
+      authenticationServer = new NodeAddress(args(3), args(4))
+
       println("Directory server listening on port " + portNumber + ": ")
     } catch {
       case e: Exception => {

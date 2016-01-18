@@ -6,4 +6,12 @@ class ReadingFileMessage(fileIdentifier: String, length: Int) extends ServerMess
     "READING_FILE: " + fileIdentifier + "\n" +
     "LENGTH: " + length + "\n"
   }
+
+  def getFileIdentifier: String = {
+    fileIdentifier
+  }
+
+  def getLength: Int = {
+    length
+  }
 }

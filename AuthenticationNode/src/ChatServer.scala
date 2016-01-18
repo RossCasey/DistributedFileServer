@@ -19,10 +19,6 @@ trait ChatServerUtility {
 }
 
 
-
-
-
-
 object ChatServer extends ChatServerUtility {
 
   var serverSocket: ServerSocket = null

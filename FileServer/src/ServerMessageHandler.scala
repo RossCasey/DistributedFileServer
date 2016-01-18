@@ -53,7 +53,7 @@ object ServerMessageHandler {
 
   def getTokenForServer(connection: Connection, node: NodeAddress, username: String, password: String): Array[String] =  {
     try {
-      val authServer = new NodeAddress("localhost", 9000.toString)
+      val authServer = new NodeAddress("localhost", 8000.toString)
       val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
       val logonMessage = Encryptor.createLogonMessage(node, username, password)
       asCon.sendMessage(logonMessage)
@@ -62,6 +62,7 @@ object ServerMessageHandler {
       val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
 
       val decrypedToken = new String(Encryptor.decrypt(dataLine, password), "UTF-8")
+      asCon.close()
       decrypedToken.split("\n")
     } catch {
       case e: Exception => {

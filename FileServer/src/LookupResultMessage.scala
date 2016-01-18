@@ -7,4 +7,16 @@ class LookupResultMessage(id: String, ip: String, port: String) extends ServerMe
       "IP: " + ip + "\n" +
       "PORT: " + port + "\n"
   }
+
+  def getID: String = {
+    id
+  }
+
+  def getPort: String = {
+    port
+  }
+
+  def getIP: String = {
+    ip
+  }
 }

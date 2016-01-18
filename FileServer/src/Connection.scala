@@ -104,4 +104,12 @@ class Connection() {
     in.read(aByte)
     aByte(0)
   }
+
+
+  /**
+   * Ends communication over socket
+   */
+  def close(): Unit = {
+    socket.close()
+  }
 }

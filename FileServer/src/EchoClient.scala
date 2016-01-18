@@ -14,24 +14,33 @@ object EchoClient {
 
   def main(args: Array[String]) {
 
+    //DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: String, directoryPort: Int, username: String, password: String)
+    val distFile = new DistributedFile("testFile.txt", "localhost", 8000, "localhost", 8100, "rcasey", "12345678")
+    distFile.open()
+
+
+
+
+
+
     //var test = new DistributedFile("testImage.png")
     //test.open()
     //test.printContents()
     //test.close()
 
 
-
-    val authCon = new Connection(2, new Socket(InetAddress.getByName("localhost"),9000))
-    val token = ServerMessageHandler.getTokenForServer(authCon, new NodeAddress("localhost", 9000.toString), "rcasey", "12345678")
+    /*
+    val authCon = new Connection(2, new Socket(InetAddress.getByName("localhost"),8000))
+    val token = ServerMessageHandler.getTokenForServer(authCon, new NodeAddress("localhost", 8100.toString), "rcasey", "12345678")
 
     if(token != null) {
       println("got token")
       val ticket = token(0).split(":")(1).trim
       val sessionKey = token(1).split(":")(1).trim
 
-      val dirCon = new Connection(3, new Socket(InetAddress.getByName("localhost"), 8000))
+      val dirCon = new Connection(3, new Socket(InetAddress.getByName("localhost"), 8100))
 
-      val lookupMessage = new LookupMessage("test4.txt", false)
+      val lookupMessage = new LookupMessage("testFile.txt", false)
       val encLookupMessage = Encryptor.encryptMessage(lookupMessage, ticket, sessionKey)
       dirCon.sendMessage(encLookupMessage)
 
@@ -50,12 +59,13 @@ object EchoClient {
       val priCon = new Connection(4, new Socket(InetAddress.getByName(ipAddress), Integer.parseInt(port)))
 
 
-      val encryptedFile = Encryptor.encrypt(Files.readAllBytes(Paths.get("./test4.txt")), sessionKey)
+      val encryptedFile = Encryptor.encrypt(Files.readAllBytes(Paths.get("./testFile.txt")), sessionKey)
       val encryptedMeesage = Encryptor.encryptMessage(new WriteFileMessage(fileID, encryptedFile.length), ticket, sessionKey)
       priCon.sendMessage(encryptedMeesage)
       priCon.sendBytes(encryptedFile.getBytes)
       println("send encrypted bytes")
     }
+    */
 
 
 
