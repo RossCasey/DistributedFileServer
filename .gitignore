@@ -1,0 +1,6 @@
+AuthenticationNode/out/*
+AuthenticationNode/Files/*
+DirectoryNode/out/*
+DirectoryNode/Files/*
+FileServer/out/*
+FileServer/Files/*
