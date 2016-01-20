@@ -23,9 +23,6 @@ trait ServerUtility {
 
 
 
-
-
-
 object DirectoryServer extends ServerUtility {
 
   var serverSocket: ServerSocket = null
@@ -68,7 +65,7 @@ object DirectoryServer extends ServerUtility {
 
 
   /**
-   * Attempts to start server on specified port
+   * Attempts to start server with specified parameters
    * @param args - command line arguments
    */
   def startServer(args: Array[String]): Unit = {
@@ -126,6 +123,9 @@ object DirectoryServer extends ServerUtility {
   }
 
 
+  /**
+   * Computes the next unique ID for a connection
+   */
   var connectionId = 0
   private def computeNextId(): Int = {
     val newId = connectionId
@@ -138,13 +138,16 @@ object DirectoryServer extends ServerUtility {
     authenticationServer
   }
 
+
   def getPassword: String = {
     password
   }
 
+
   def getUsername: String = {
     username
   }
+
 
   def getKey: String = {
     key

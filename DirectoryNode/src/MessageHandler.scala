@@ -1,3 +1,5 @@
+import ServerMessages.{ServerMessage, HeloReplyMessage, EncryptedMessage}
+
 /**
  * Created by Ross on 10/11/15.
  */
@@ -9,6 +11,13 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
     val Error, Helo, Kill, Lookup, RegisterPrimary, RegisterReplica = Value
   }
 
+
+  /**
+   * Decrypts a received ticket that is encrypted with this node's key
+   *
+   * @param encryptedTicket - ticket to be decrypted
+   * @return
+   */
   def decryptTicket(encryptedTicket: String): Array[String] = {
     try {
       val decryptedTicket = Encryptor.decrypt(encryptedTicket, serverUtility.getKey)
@@ -22,7 +31,13 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
-
+  /**
+   * Decrypts a message received by node
+   *
+   * @param encryptedMessage - encrypted message to decrypt
+   * @param key - key to decrypt message with
+   * @return decrypted message
+   */
   def decryptMessage(encryptedMessage: String, key: String): Array[String] = {
     try {
       val decryptedMessage = Encryptor.decrypt(encryptedMessage, key)
@@ -36,6 +51,13 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
+  /**
+   * Determies whether a ticket has expired based on the expiration time specified in
+   * the ticket.
+   *
+   * @param expirationTime - expiration time contained in ticket
+   * @return true if ticket has expired, false otherwise
+   */
   def isTicketExpired(expirationTime: String): Boolean = {
     val expTime = expirationTime.toLong
     val currentTime = System.currentTimeMillis() / 1000
@@ -48,6 +70,13 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
+  /**
+   * Decrypts a message received
+   *
+   * @param dataStr - encrypted data which contains the message
+   * @param ticket - ticket accompanying the message
+   * @return decrypted message that was received
+   */
   def getDecryptedMessage(dataStr: String, ticket: Array[String]): Array[String] = {
 
     if(ticket != null) {
@@ -75,11 +104,18 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
+  /**
+   * Encrypts the passed message and sends it to the connection associated with this handler.
+   *
+   * @param message - message to send
+   * @param key - key to encrypt message with
+   */
   private def encryptAndSendMessage(message: ServerMessage, key: String): Unit = {
     val encryptedMessage = Encryptor.encrypt(message.toString.getBytes("UTF-8"), key)
     val messageToSend = new EncryptedMessage(encryptedMessage, "")
     connection.sendMessage(messageToSend)
   }
+
 
   /**
    * Determines the message type of an incoming user message and performs
@@ -128,8 +164,8 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
 
 
   /**
-   * Handles a line that cannot be identifed
-   * @param firstLine - first line of unidentified message
+   * Handles a message that cannot be identified
+   * @param message - unidentifiable message
    */
   private def handleUnknownPacket(message: Array[String]):Unit = {
     print("CONTENTS OF UNIDENTIFIED PACKET:")
@@ -139,7 +175,8 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
 
   /**
    * Handles a helo message from a user
-   * @param firstLine - first line of helo message
+   * @param message - message received by node
+   * @param key - key to encrypt reply with
    */
   private def handleHeloMessage(message: Array[String], key: String): Unit = {
     val id = "cf6932cd853ecd5e1c39a62f639f5548cf2b4cbb567075697e9a7339bcbf4ee3"
@@ -155,6 +192,12 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
+  /**
+   * Handles the reception of a lookup message.
+   *
+   * @param message - message received
+   * @param sessionKey - key with which communications should be encrypted
+   */
   private def handleLookup(message: Array[String], sessionKey: String): Unit = {
     val path = message(0).split(":")(1).trim
     val lookupType = message(1).split(":")(1).trim
@@ -169,7 +212,12 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
-
+  /**
+   * Handles the registration of a primary node
+   *
+   * @param message - message received
+   * @param sessionKey - key with which communications should be encrypted
+   */
   private def handlePrimaryRegistration(message: Array[String], sessionKey: String): Unit = {
     val ip = message(0).split(":")(1).trim
     val port = message(1).split(":")(1).trim
@@ -177,6 +225,12 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
   }
 
 
+  /**
+   * Handles the registration of a replica node
+   *
+   * @param message - message received
+   * @param sessionKey - key with which communications should be encrypted
+   */
   private def handleReplicaRegistration(message: Array[String], sessionKey: String): Unit = {
     val replicaIP = message(0).split(":")(1).trim
     val replicaPort = message(1).split(":")(1).trim

@@ -10,6 +10,12 @@ class LookupTable {
   var nextAvailableId = -1
   initialise()
 
+
+  /**
+   * Initialises the lookup table. Reads the files that store the lookup table info
+   * from disk to recreate the state of the directory node when it was shut down. If
+   * the files do not exist then create blank new ones.
+   */
   def initialise(): Unit = {
     try {
       var inputStream = new ObjectInputStream(new FileInputStream("./LookupTable.lt"))
@@ -32,6 +38,10 @@ class LookupTable {
   }
 
 
+  /**
+   * Save the state of the lookup table to disk so that it can be restored when
+   * directory node is started again after shutdown.
+   */
   private def save(): Unit = {
     var outputStream = new ObjectOutputStream(new FileOutputStream("./LookupTable.lt"))
     outputStream.writeObject(entries)
@@ -43,6 +53,12 @@ class LookupTable {
   }
 
 
+  /**
+   * Add an association between a nodeID and a file path.
+   *
+   * @param nodeId
+   * @param path
+   */
   def add(nodeId: String, path: String): Unit = {
     val nextId = nextAvailableId
     nextAvailableId += 1
@@ -54,6 +70,11 @@ class LookupTable {
   }
 
 
+  /**
+   * Remove all entries in the lookup table with the specified file id
+   *
+   * @param id - all entries with this file ID will be removed
+   */
   def removeAllWithId(id: String): Unit = {
     for(entry <- entries) {
       if(entry.getFileId == id) {
@@ -63,6 +84,11 @@ class LookupTable {
   }
 
 
+  /**
+   * Removes all entries with the node ID specified
+   *
+   * @param nodeId - all entries with this node ID shall be removed
+   */
   def removeAllWithNodeId(nodeId: String): Unit = {
     for(entry <- entries) {
       if(entry.getNodeId == nodeId) {
@@ -72,6 +98,12 @@ class LookupTable {
   }
 
 
+  /**
+   * Finds the entry with the specified file path
+   *
+   * @param path - path to find entry with
+   * @return entry containing that path id
+   */
   def findEntryWithPath(path: String): LookupTableEntry = {
     for(entry <- entries) {
       if(entry.getPath == path) {

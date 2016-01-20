@@ -1,6 +1,8 @@
 import java.io.{InputStream, PrintStream}
 import java.net._
 
+import ServerMessages.ServerMessage
+
 import scala.io.BufferedSource
 
 /**
@@ -69,6 +71,7 @@ class Connection() {
     in.available() > 0
   }
 
+
   /**
    * Returns the ID of the connection
    */
@@ -103,5 +106,13 @@ class Connection() {
     val aByte = Array[Byte](1)
     in.read(aByte)
     aByte(0)
+  }
+
+
+  /**
+   * Ends communication over socket
+   */
+  def close(): Unit = {
+    socket.close()
   }
 }

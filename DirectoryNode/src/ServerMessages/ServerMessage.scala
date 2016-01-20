@@ -1,3 +1,5 @@
+package ServerMessages
+
 /**
  * Created by Ross on 11/11/15.
  */

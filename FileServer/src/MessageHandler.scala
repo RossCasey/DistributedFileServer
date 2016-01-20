@@ -1,4 +1,4 @@
-package ServerMessages
+import ServerMessages._
 
 /**
  * Created by Ross on 10/11/15.
@@ -49,6 +49,7 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
       }
     }
   }
+
 
   /**
    * Determies whether a ticket has expired based on the expiration time specified in
@@ -172,8 +173,8 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
 
 
   /**
-   * Handles a line that cannot be identifed
-   * @param message
+   * Handles a message that cannot be identified
+   * @param message - unidentifiable message
    */
   private def handleUnknownPacket(message: Array[String]):Unit = {
     print("CONTENTS OF UNIDENTIFIED PACKET:")
