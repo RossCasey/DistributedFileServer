@@ -66,10 +66,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NodeTableEntry.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NodeTableEntry.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/NodeTableEntry.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.05">
+            <state vertical-scroll-proportion="0.0">
               <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
               <folding />
             </state>
@@ -126,14 +126,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LookupTable.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LookupTable.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/LookupTable.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.42159763">
               <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="43" selection-end-column="5" />
               <folding>
                 <element signature="e#292#1153#0" expanded="false" />
-                <element signature="e#1158#1620#0" expanded="false" />
                 <element signature="e#1625#1953#0" expanded="false" />
                 <element signature="e#1958#2255#0" expanded="false" />
                 <element signature="e#2260#2555#0" expanded="false" />
@@ -222,10 +221,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1280" />
+    <option name="x" value="-2" />
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="997" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -653,15 +652,15 @@
       <updated>1453150577272</updated>
       <workItem from="1453150578644" duration="141000" />
       <workItem from="1453152377220" duration="1392000" />
-      <workItem from="1453291260855" duration="4200000" />
+      <workItem from="1453291260855" duration="4961000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5733000" />
+    <option name="totallyTimeSpent" value="6494000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="23" width="1280" height="997" extended-state="6" />
+    <frame x="-2" y="23" width="1280" height="773" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -869,21 +868,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/LookupTable.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="43" selection-end-column="5" />
-          <folding>
-            <element signature="e#292#1153#0" expanded="false" />
-            <element signature="e#1158#1620#0" expanded="false" />
-            <element signature="e#1625#1953#0" expanded="false" />
-            <element signature="e#1958#2255#0" expanded="false" />
-            <element signature="e#2260#2555#0" expanded="false" />
-            <element signature="e#2560#2887#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/NodeTable.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -905,9 +889,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NodeTableEntry.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05">
+        <state vertical-scroll-proportion="0.0">
           <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LookupTable.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42159763">
+          <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="43" selection-end-column="5" />
+          <folding>
+            <element signature="e#292#1153#0" expanded="false" />
+            <element signature="e#1625#1953#0" expanded="false" />
+            <element signature="e#1958#2255#0" expanded="false" />
+            <element signature="e#2260#2555#0" expanded="false" />
+            <element signature="e#2560#2887#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

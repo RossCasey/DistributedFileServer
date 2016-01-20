@@ -83,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Encryptor.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Encryptor.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Encryptor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="102" column="2" selection-start-line="102" selection-start-column="2" selection-end-line="110" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.55473375">
+              <caret line="68" column="2" selection-start-line="68" selection-start-column="2" selection-end-line="75" selection-end-column="5" />
               <folding>
                 <element signature="e#244#875#0" expanded="false" />
                 <element signature="e#880#1162#0" expanded="false" />
@@ -101,11 +101,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageHandler.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MessageHandler.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42159763">
-              <caret line="184" column="2" selection-start-line="184" selection-start-column="2" selection-end-line="188" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="206" column="50" selection-start-line="206" selection-start-column="50" selection-end-line="206" selection-end-column="50" />
               <folding>
                 <element signature="e#218#366#0" expanded="false" />
                 <element signature="e#371#847#0" expanded="false" />
@@ -289,24 +289,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FileServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="FileServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ServerMessages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -677,12 +659,12 @@
       <updated>1453150738585</updated>
       <workItem from="1453150740035" duration="635000" />
       <workItem from="1453152078149" duration="6801000" />
-      <workItem from="1453291242857" duration="13951000" />
+      <workItem from="1453291242857" duration="14227000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21387000" />
+    <option name="totallyTimeSpent" value="21663000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="23" width="1280" height="773" extended-state="6" />
@@ -1131,26 +1113,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Encryptor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="2" selection-start-line="102" selection-start-column="2" selection-end-line="110" selection-end-column="5" />
-          <folding>
-            <element signature="e#244#875#0" expanded="false" />
-            <element signature="e#880#1162#0" expanded="false" />
-            <element signature="e#1167#1811#0" expanded="false" />
-            <element signature="e#1816#2546#0" expanded="false" />
-            <element signature="e#2551#3158#0" expanded="false" />
-            <element signature="e#3163#4011#0" expanded="false" />
-            <element signature="e#4016#4772#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42159763">
-          <caret line="184" column="2" selection-start-line="184" selection-start-column="2" selection-end-line="188" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="206" column="50" selection-start-line="206" selection-start-column="50" selection-end-line="206" selection-end-column="50" />
           <folding>
             <element signature="e#218#366#0" expanded="false" />
             <element signature="e#371#847#0" expanded="false" />
@@ -1169,6 +1135,22 @@
             <element signature="e#7539#7940#0" expanded="false" />
             <element signature="e#7945#8509#0" expanded="false" />
             <element signature="e#8514#8823#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Encryptor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.55473375">
+          <caret line="68" column="2" selection-start-line="68" selection-start-column="2" selection-end-line="75" selection-end-column="5" />
+          <folding>
+            <element signature="e#244#875#0" expanded="false" />
+            <element signature="e#880#1162#0" expanded="false" />
+            <element signature="e#1167#1811#0" expanded="false" />
+            <element signature="e#1816#2546#0" expanded="false" />
+            <element signature="e#2551#3158#0" expanded="false" />
+            <element signature="e#3163#4011#0" expanded="false" />
+            <element signature="e#4016#4772#0" expanded="false" />
           </folding>
         </state>
       </provider>

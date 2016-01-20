@@ -29,7 +29,7 @@ object AuthenticationServer extends ServerUtility {
     //attempt to create a server socket, exit otherwise
     startServer(args)
 
-    EncryptionHandler.addUser("rcasey", "12345678")
+    EncryptionHandler.addUser("rcasey", "12345678")   //automatically add this user to table, all nodes use it
 
     var exit = false
     while(!exit) {
@@ -53,7 +53,8 @@ object AuthenticationServer extends ServerUtility {
 
 
   /**
-   * Attempts to start server on specified port
+   * Attempts to start server with specified parameters
+   *
    * @param args - arguments passed in to program at run time
    */
   def startServer(args: Array[String]): Unit = {
@@ -105,6 +106,9 @@ object AuthenticationServer extends ServerUtility {
   }
 
 
+  /**
+   * Computes a unique ID for a new connection.
+   */
   var connectionId = 0
   private def computeNextId(): Int = {
     val newId = connectionId
