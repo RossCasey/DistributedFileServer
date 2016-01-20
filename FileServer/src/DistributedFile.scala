@@ -1,11 +1,6 @@
-import java.io.{BufferedOutputStream, FileOutputStream, ByteArrayOutputStream, PrintStream}
-import java.net.{InetAddress, Socket}
-import java.nio.charset.{CharsetDecoder, Charset, CodingErrorAction}
+import java.io.{ByteArrayOutputStream}
+import java.net.{Socket}
 
-import ServerMessages._
-
-import scala.collection.mutable.ListBuffer
-import scala.io.BufferedSource
 
 
 /**
@@ -18,12 +13,12 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
 
 
   /**
-   * Parses the response from an authentication server and returns a ServerMessages.TokenMessage
+   * Parses the response from an authentication server and returns a TokenMessage
    * which contains all relevant information for secure message transfer with the
    * requested node
    *
    * @param response - response received from authentication server (decrypted)
-   * @return ServerMessages.TokenMessage containing details for secure communication with requested node
+   * @return TokenMessage containing details for secure communication with requested node
    */
   private def parseTokenFromAuthenticationServerResponse(response: String): TokenMessage = {
     try {
@@ -49,7 +44,7 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
    * node.
    *
    * @param node - node to request ticket for
-   * @return ServerMessages.TokenMessage containing all relevant information for secure communication
+   * @return TokenMessage containing all relevant information for secure communication
    */
   private def getTicketForNodeFromAuthServer(node: NodeAddress): TokenMessage = {
     try {
@@ -80,7 +75,7 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
    * contact the file server specified by the directory server and perform file actions.
    *
    * @param response - response received from directory server (decrypted)
-   * @return ServerMessages.LookupResultMessage containing all relevant info to contact file node with file
+   * @return LookupResultMessage containing all relevant info to contact file node with file
    */
   private def parseLookupResultMessageFromDirectoryServerResponse(response: String): LookupResultMessage = {
     try {
@@ -105,7 +100,7 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
    * @param ticket - ticket recieved from authentication server for communication with Directory server
    * @param sessionKey - session key recieved from authentication server for communication with Directory server
    * @param forReading - whether the file is to be read or written to (this affects the node the DS returns)
-   * @return ServerMessages.LookupResultMessage containing all relevant info to contaict file node with file
+   * @return LookupResultMessage containing all relevant info to contaict file node with file
    */
   private def lookupFileAddressFromDirectory(ticket: String, sessionKey: String, forReading: Boolean): LookupResultMessage= {
     try {
@@ -114,7 +109,6 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
       val lookupMessage = new LookupMessage(path, forReading)
       val encLookupMessage = Encryptor.encryptMessage(lookupMessage, ticket, sessionKey)
       dirCon.sendMessage(encLookupMessage)
-      println("got here 0")
 
       val dataLine = dirCon.nextLine().split(":")(1).trim
       val ticketLine = dirCon.nextLine()
@@ -132,11 +126,11 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
 
 
   /**
-   * Parses the reading file message received from a file node and returns a ServerMessages.ReadingFileMessage
+   * Parses the reading file message received from a file node and returns a ReadingFileMessage
    * containing the id and length of the file.
    *
    * @param response - response received from file node
-   * @return ServerMessages.ReadingFileMessage containing info relevant to file operations (id and length)
+   * @return ReadingFileMessage containing info relevant to file operations (id and length)
    */
   private def parseReadingFileMessageFromServerResponse(response: String): ReadingFileMessage = {
     try {
@@ -249,6 +243,7 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
       val encryptedMeesage = Encryptor.encryptMessage(new WriteFileMessage(lookupResult.getID, encryptedFile.length),tokenForFileNode.getTicket , tokenForFileNode.getSessionKey)
       nodeCon.sendMessage(encryptedMeesage)
       nodeCon.sendBytes(encryptedFile.getBytes)
+      nodeCon.close()
       println("Encrypted file uploaded")
 
     } catch {

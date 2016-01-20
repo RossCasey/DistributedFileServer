@@ -1,7 +1,6 @@
 import java.io.{BufferedOutputStream, FileOutputStream, ByteArrayOutputStream, File}
 import java.net.Socket
 import java.nio.file.{Paths, Files}
-import ServerMessages.{WriteFileMessage, ReadingFileMessage, FileIDsResponseMessage, FileHashResponseMessage}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -56,6 +55,7 @@ object FileHandler {
 
       val dataLine = asCon.nextLine().split(":")(1).trim
       val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
+      asCon.close()
 
       val decrypedToken = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
       decrypedToken.split("\n")
@@ -89,6 +89,7 @@ object FileHandler {
 
       repCon.sendMessage(encryptedWriteFileMessage)
       repCon.sendBytes(encryptedFile.getBytes("UTF-8"))
+      repCon.close()
     } catch {
       case e: Exception => {
         println(s"FAILED TO COPY FILL TO REPLICA " + replica.getIP + "/" + replica.getPort)

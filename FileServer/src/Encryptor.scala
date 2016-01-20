@@ -2,8 +2,6 @@ import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 
-import ServerMessages.{ServerMessage, LogonRequest, EncryptedMessage}
-
 /**
  * Created by Ross on 23/12/15.
  */
@@ -91,7 +89,7 @@ object Encryptor {
    * @param message - message to encrypted
    * @param ticket - ticket to be passed with encrypted message
    * @param key - session key to be used to encrypt the message
-   * @return ServerMessages.ServerMessage suitable for secure transmission
+   * @return ServerMessage suitable for secure transmission
    */
   def encryptMessage(message: ServerMessage, ticket: String, key: String): ServerMessage = {
     println("Encrypting: " + message.toString)

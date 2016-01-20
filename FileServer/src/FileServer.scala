@@ -2,7 +2,6 @@ import java.net.{Socket, InetAddress, ServerSocket}
 import java.util.concurrent.{Executors, ExecutorService}
 import java.nio.file.{Files, Paths}
 import java.io.File
-import ServerMessages.{RegisterReplicaMessage, RegisterPrimaryMessage}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
@@ -23,7 +22,7 @@ trait ServerUtility {
   def getPrimaryServer: NodeAddress
   def getAuthenticationServer: NodeAddress
   def getReplicaServers: Array[NodeAddress]
-  def addReplicaServer(replica: NodeAddress): Unit
+  def addReplicaServer(replica: NodeAddress)
   def getKey: String
   def getUsername: String
   def getPassword: String
@@ -118,7 +117,7 @@ object FileServer extends ServerUtility {
    * @param node - node to request ticket for
    * @return decrypted response from authentication server
    */
-  private def getToken(node: NodeAddress): Array[String] = {
+  def getToken(node: NodeAddress): Array[String] = {
     try {
       val authServer = getAuthenticationServer
       val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
@@ -127,6 +126,7 @@ object FileServer extends ServerUtility {
 
       val dataLine = asCon.nextLine().split(":")(1).trim
       val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
+      asCon.close()
 
       val decrypedToken = new String(Encryptor.decrypt(dataLine, getPassword), "UTF-8")
       decrypedToken.split("\n")
@@ -170,6 +170,7 @@ object FileServer extends ServerUtility {
       } else {
         println("Error registering with directory server")
       }
+      directoryConnection.close()
     } else {
       println("Error authenticating for communication with directory server")
     }

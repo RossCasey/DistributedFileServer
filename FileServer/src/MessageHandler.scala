@@ -1,4 +1,3 @@
-import ServerMessages._
 
 /**
  * Created by Ross on 10/11/15.
@@ -111,9 +110,8 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
    * @param key - key to encrypt message with
    */
   private def encryptAndSendMessage(message: ServerMessage, key: String): Unit = {
-    val encryptedMessage = Encryptor.encrypt(message.toString.getBytes("UTF-8"), key)
-    val messageToSend = new EncryptedMessage(encryptedMessage, "")
-    connection.sendMessage(messageToSend)
+    val encryptedMessage = Encryptor.encryptMessage(message, "", key)
+    connection.sendMessage(encryptedMessage)
   }
 
 

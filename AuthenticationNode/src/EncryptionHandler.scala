@@ -1,7 +1,6 @@
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.Cipher
 import java.util.Base64
-import ServerMessages.{TokenMessage, Ticket, EncryptedMessage}
 
 import scala.util.Random
 import java.nio.charset.StandardCharsets

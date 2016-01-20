@@ -26,10 +26,9 @@
       <file leaf-file-name="AuthenticationServer.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AuthenticationServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+            <state vertical-scroll-proportion="-10.777778">
+              <caret line="40" column="30" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="30" />
               <folding>
-                <element signature="e#629#1298#0" expanded="false" />
                 <element signature="e#1303#1873#0" expanded="false" />
                 <element signature="e#1878#2007#0" expanded="false" />
                 <element signature="e#2012#2129#0" expanded="false" />
@@ -45,40 +44,39 @@
         <entry file="file://$PROJECT_DIR$/src/Connection.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="103" column="25" selection-start-line="103" selection-start-column="25" selection-end-line="103" selection-end-column="25" />
+              <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
               <folding>
-                <element signature="e#334#512#0" expanded="false" />
-                <element signature="e#516#853#0" expanded="false" />
-                <element signature="e#858#1090#0" expanded="false" />
-                <element signature="e#1095#1311#0" expanded="false" />
-                <element signature="e#1316#1498#0" expanded="false" />
-                <element signature="e#1502#1581#0" expanded="false" />
-                <element signature="e#1586#1709#0" expanded="false" />
-                <element signature="e#1714#1907#0" expanded="false" />
-                <element signature="e#1912#2095#0" expanded="false" />
-                <element signature="e#2099#2191#0" expanded="false" />
+                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#265#443#0" expanded="false" />
+                <element signature="e#447#784#0" expanded="false" />
+                <element signature="e#789#1021#0" expanded="false" />
+                <element signature="e#1026#1242#0" expanded="false" />
+                <element signature="e#1247#1429#0" expanded="false" />
+                <element signature="e#1433#1512#0" expanded="false" />
+                <element signature="e#1517#1640#0" expanded="false" />
+                <element signature="e#1645#1838#0" expanded="false" />
+                <element signature="e#1843#2026#0" expanded="false" />
+                <element signature="e#2030#2122#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConnectionInputListener.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ConnectionInputListener.scala">
+      <file leaf-file-name="ServerMessage.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ServerMessage.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-              <folding>
-                <element signature="e#179#828#0" expanded="false" />
-              </folding>
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="LogonRequest.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ServerMessages/LogonRequest.scala">
+        <entry file="file://$PROJECT_DIR$/src/LogonRequest.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -87,15 +85,14 @@
       <file leaf-file-name="MessageHandler.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+            <state vertical-scroll-proportion="-21.777779">
+              <caret line="64" column="31" selection-start-line="64" selection-start-column="27" selection-end-line="64" selection-end-column="31" />
               <folding>
-                <element signature="e#320#860#0" expanded="false" />
-                <element signature="e#888#1349#0" expanded="false" />
-                <element signature="e#1354#1602#0" expanded="false" />
-                <element signature="e#1607#2041#0" expanded="false" />
-                <element signature="e#2046#2260#0" expanded="false" />
-                <element signature="e#2266#2746#0" expanded="false" />
+                <element signature="e#281#821#0" expanded="false" />
+                <element signature="e#849#1310#0" expanded="false" />
+                <element signature="e#1315#1563#0" expanded="false" />
+                <element signature="e#2007#2221#0" expanded="false" />
+                <element signature="e#2227#2707#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -104,8 +101,8 @@
       <file leaf-file-name="UserLookupTable.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserLookupTable.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="88" column="44" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
+            <state vertical-scroll-proportion="-9.444445">
+              <caret line="23" column="50" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="50" />
               <folding>
                 <element signature="e#269#446#0" expanded="false" />
                 <element signature="e#451#1144#0" expanded="false" />
@@ -121,8 +118,8 @@
       <file leaf-file-name="UserLookupTableEntry.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UserLookupTableEntry.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.05">
-              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.01718213">
+              <caret line="1" column="21" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -131,23 +128,22 @@
       <file leaf-file-name="Encryptor.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Encryptor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+            <state vertical-scroll-proportion="-25.11111">
+              <caret line="77" column="24" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="24" />
               <folding>
                 <element signature="e#173#804#0" expanded="false" />
                 <element signature="e#809#1091#0" expanded="false" />
                 <element signature="e#1096#1740#0" expanded="false" />
-                <element signature="e#1745#2475#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="HeloReplyMessage.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ServerMessages/HeloReplyMessage.scala">
+        <entry file="file://$PROJECT_DIR$/src/HeloReplyMessage.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -156,16 +152,16 @@
       <file leaf-file-name="EncryptionHandler.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/EncryptionHandler.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="133" column="55" selection-start-line="133" selection-start-column="55" selection-end-line="133" selection-end-column="55" />
+            <state vertical-scroll-proportion="-3.3333333">
+              <caret line="11" column="18" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="18" />
               <folding>
-                <element signature="e#328#663#0" expanded="false" />
-                <element signature="e#668#1372#0" expanded="false" />
-                <element signature="e#1377#1609#0" expanded="false" />
-                <element signature="e#1614#2007#0" expanded="false" />
-                <element signature="e#2012#2839#0" expanded="false" />
-                <element signature="e#2844#3964#0" expanded="false" />
-                <element signature="e#3969#4206#0" expanded="false" />
+                <element signature="e#265#600#0" expanded="false" />
+                <element signature="e#605#1309#0" expanded="false" />
+                <element signature="e#1314#1546#0" expanded="false" />
+                <element signature="e#1551#1944#0" expanded="false" />
+                <element signature="e#1949#2776#0" expanded="false" />
+                <element signature="e#2781#3901#0" expanded="false" />
+                <element signature="e#3906#4143#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -189,6 +185,8 @@
         <option value="$PROJECT_DIR$/src/ServerMessages/HeloReplyMessage.scala" />
         <option value="$PROJECT_DIR$/src/ServerMessages/LogonRequest.scala" />
         <option value="$PROJECT_DIR$/src/UserLookupTable.scala" />
+        <option value="$PROJECT_DIR$/src/ServerMessages/ServerMessage.scala" />
+        <option value="$PROJECT_DIR$/src/Connection.scala" />
       </list>
     </option>
   </component>
@@ -282,8 +280,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ServerMessages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="AuthenticationServer.scala" />
+              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -639,12 +637,12 @@
       <workItem from="1453150412786" duration="142000" />
       <workItem from="1453151880108" duration="196000" />
       <workItem from="1453152366755" duration="2563000" />
-      <workItem from="1453291258921" duration="2362000" />
+      <workItem from="1453291258921" duration="4208000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5263000" />
+    <option name="totallyTimeSpent" value="7109000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1280" y="23" width="1280" height="997" extended-state="6" />
@@ -661,6 +659,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -669,7 +668,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -728,7 +726,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerMessages/Ticket.scala">
+    <entry file="file://$PROJECT_DIR$/src/Ticket.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
@@ -736,7 +734,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerMessages/TokenMessage.scala">
+    <entry file="file://$PROJECT_DIR$/src/TokenMessage.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
@@ -752,41 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AuthenticationServer.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
-          <folding>
-            <element signature="e#629#1298#0" expanded="false" />
-            <element signature="e#1303#1873#0" expanded="false" />
-            <element signature="e#1878#2007#0" expanded="false" />
-            <element signature="e#2012#2129#0" expanded="false" />
-            <element signature="e#2134#2297#0" expanded="false" />
-            <element signature="e#2302#2391#0" expanded="false" />
-            <element signature="e#2479#2580#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Connection.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="103" column="25" selection-start-line="103" selection-start-column="25" selection-end-line="103" selection-end-column="25" />
-          <folding>
-            <element signature="e#334#512#0" expanded="false" />
-            <element signature="e#516#853#0" expanded="false" />
-            <element signature="e#858#1090#0" expanded="false" />
-            <element signature="e#1095#1311#0" expanded="false" />
-            <element signature="e#1316#1498#0" expanded="false" />
-            <element signature="e#1502#1581#0" expanded="false" />
-            <element signature="e#1586#1709#0" expanded="false" />
-            <element signature="e#1714#1907#0" expanded="false" />
-            <element signature="e#1912#2095#0" expanded="false" />
-            <element signature="e#2099#2191#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ConnectionInputListener.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -797,70 +760,111 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/EncryptionHandler.scala">
+    <entry file="file://$PROJECT_DIR$/src/HeloReplyMessage.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="133" column="55" selection-start-line="133" selection-start-column="55" selection-end-line="133" selection-end-column="55" />
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LogonRequest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerMessage.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Connection.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
           <folding>
-            <element signature="e#328#663#0" expanded="false" />
-            <element signature="e#668#1372#0" expanded="false" />
-            <element signature="e#1377#1609#0" expanded="false" />
-            <element signature="e#1614#2007#0" expanded="false" />
-            <element signature="e#2012#2839#0" expanded="false" />
-            <element signature="e#2844#3964#0" expanded="false" />
-            <element signature="e#3969#4206#0" expanded="false" />
+            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#265#443#0" expanded="false" />
+            <element signature="e#447#784#0" expanded="false" />
+            <element signature="e#789#1021#0" expanded="false" />
+            <element signature="e#1026#1242#0" expanded="false" />
+            <element signature="e#1247#1429#0" expanded="false" />
+            <element signature="e#1433#1512#0" expanded="false" />
+            <element signature="e#1517#1640#0" expanded="false" />
+            <element signature="e#1645#1838#0" expanded="false" />
+            <element signature="e#1843#2026#0" expanded="false" />
+            <element signature="e#2030#2122#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AuthenticationServer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.777778">
+          <caret line="40" column="30" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="30" />
+          <folding>
+            <element signature="e#1303#1873#0" expanded="false" />
+            <element signature="e#1878#2007#0" expanded="false" />
+            <element signature="e#2012#2129#0" expanded="false" />
+            <element signature="e#2134#2297#0" expanded="false" />
+            <element signature="e#2302#2391#0" expanded="false" />
+            <element signature="e#2479#2580#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EncryptionHandler.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3333333">
+          <caret line="11" column="18" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="18" />
+          <folding>
+            <element signature="e#265#600#0" expanded="false" />
+            <element signature="e#605#1309#0" expanded="false" />
+            <element signature="e#1314#1546#0" expanded="false" />
+            <element signature="e#1551#1944#0" expanded="false" />
+            <element signature="e#1949#2776#0" expanded="false" />
+            <element signature="e#2781#3901#0" expanded="false" />
+            <element signature="e#3906#4143#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Encryptor.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+        <state vertical-scroll-proportion="-25.11111">
+          <caret line="77" column="24" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="24" />
           <folding>
             <element signature="e#173#804#0" expanded="false" />
             <element signature="e#809#1091#0" expanded="false" />
             <element signature="e#1096#1740#0" expanded="false" />
-            <element signature="e#1745#2475#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerMessages/HeloReplyMessage.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerMessages/LogonRequest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MessageHandler.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+        <state vertical-scroll-proportion="-21.777779">
+          <caret line="64" column="31" selection-start-line="64" selection-start-column="27" selection-end-line="64" selection-end-column="31" />
           <folding>
-            <element signature="e#320#860#0" expanded="false" />
-            <element signature="e#888#1349#0" expanded="false" />
-            <element signature="e#1354#1602#0" expanded="false" />
-            <element signature="e#1607#2041#0" expanded="false" />
-            <element signature="e#2046#2260#0" expanded="false" />
-            <element signature="e#2266#2746#0" expanded="false" />
+            <element signature="e#281#821#0" expanded="false" />
+            <element signature="e#849#1310#0" expanded="false" />
+            <element signature="e#1315#1563#0" expanded="false" />
+            <element signature="e#2007#2221#0" expanded="false" />
+            <element signature="e#2227#2707#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserLookupTable.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="44" selection-start-line="88" selection-start-column="44" selection-end-line="88" selection-end-column="44" />
+        <state vertical-scroll-proportion="-9.444445">
+          <caret line="23" column="50" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="50" />
           <folding>
             <element signature="e#269#446#0" expanded="false" />
             <element signature="e#451#1144#0" expanded="false" />
@@ -874,8 +878,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UserLookupTableEntry.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.01718213">
+          <caret line="1" column="21" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="21" />
           <folding />
         </state>
       </provider>

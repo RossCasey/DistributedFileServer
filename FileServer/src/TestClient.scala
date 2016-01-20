@@ -14,14 +14,16 @@ object TestClient {
 
   def main(args: Array[String]) {
 
+    val fileName = "test5.txt"
+
     //file that does not exist being added to system
-    val distFile = new DistributedFile("rattle.mp3", "localhost", 9000, "localhost", 9100, "rcasey", "12345678")
+    val distFile = new DistributedFile(fileName, "localhost", 10000, "localhost", 10100, "rcasey", "12345678")
     distFile.open()
 
-    val otherFile = Files.readAllBytes(Paths.get("./rattle.mp3"))
-    distFile.write(0, otherFile.length, otherFile)
+    //val otherFile = Files.readAllBytes(Paths.get("./" + fileName))
+    //distFile.write(0, otherFile.length, otherFile)
 
-    distFile.close()
+    //distFile.close()
   }
 
 

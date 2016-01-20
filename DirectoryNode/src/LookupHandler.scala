@@ -1,7 +1,5 @@
 import java.net.{InetAddress, Socket}
 
-import ServerMessages.{RegisterResponseMessage, LookupResultMessage}
-
 /**
  * Created by Ross on 21/12/15.
  */

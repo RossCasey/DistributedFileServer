@@ -1,8 +1,6 @@
 import java.io.{InputStream, PrintStream}
 import java.net._
 
-import ServerMessages.ServerMessage
-
 import scala.io.BufferedSource
 
 /**

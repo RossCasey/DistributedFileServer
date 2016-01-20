@@ -1,6 +1,5 @@
 import java.net.Socket
 
-import ServerMessages.{RequestReadFileMessage, RequestFileIDsMessage, RequestFileHashMessage, RegisterReplicaMessage}
 
 /**
  * Created by Ross on 22/12/15.
@@ -146,6 +145,7 @@ object SyncHandler {
       } else {
         println("FAILED TO REGISTER AS REPLICA")
       }
+      primaryCon.close()
     }
   }
 }

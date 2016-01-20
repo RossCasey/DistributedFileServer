@@ -1,6 +1,5 @@
 import java.io.{FileOutputStream, ObjectOutputStream, ObjectInputStream, FileInputStream}
 import java.net.{InetAddress, Socket}
-import ServerMessages.PingMessage
 
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
@@ -76,6 +75,7 @@ class NodeTable {
 
       var dataLine = authCon.nextLine().split(":")(1).trim
       var ticketLine = authCon.nextLine() //dont care
+      authCon.close()
 
       var decrypted = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
       var messageLines = decrypted.split("\n")
@@ -91,6 +91,7 @@ class NodeTable {
 
       dataLine = nodeConnection.nextLine().split(":")(1).trim
       ticketLine = nodeConnection.nextLine() //dont care
+      nodeConnection.close()
 
       decrypted = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
       if(decrypted.contains("PONG")) {
@@ -184,7 +185,7 @@ class NodeTable {
 
     //return a random replica that responds to ping
     if(replicas.nonEmpty) {
-      Random.shuffle(replicas)
+      replicas = Random.shuffle(replicas)
       for(replica <- replicas) {
         if(pingServer(replica.getIp, replica.getPort, serverUtility)) {
           return replica
