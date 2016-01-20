@@ -1,10 +1,20 @@
 import java.net.Socket
 
+import ServerMessages.{RequestReadFileMessage, RequestFileIDsMessage, RequestFileHashMessage, RegisterReplicaMessage}
+
 /**
  * Created by Ross on 22/12/15.
  */
 object SyncHandler {
 
+  /**
+   * Downloads a copy of the file with the specified file ID from the specifed connection
+   *
+   * @param fileIdentifier - id of file to download
+   * @param connection - connection to download file from
+   * @param ticket - ticket to accompany request to download file
+   * @param sessionKey - key to use to encrypt communication
+   */
   def loadCopyOfFileFromPrimary(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Unit = {
     println(s"Getting copy of file $fileIdentifier from primary...")
 
@@ -23,6 +33,16 @@ object SyncHandler {
   }
 
 
+  /**
+   * Determines whether the file with the specified with id is up to date with the node at the other
+   * end of the passed connection
+   *
+   * @param fileIdentifier - id of file to check is up to date
+   * @param connection - connection with file to use as reference
+   * @param ticket - ticket to accompany request message
+   * @param sessionKey - key to use for encryption during process
+   * @return true if file is up to date, false otherwise
+   */
   def isFileUpToDate(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Boolean = {
     val hashOfLocalCopy = FileHandler.computeHash(fileIdentifier)
 
@@ -42,6 +62,15 @@ object SyncHandler {
   }
 
 
+  /**
+   * Synces a file with the passed ID with the primary. If the files does not exist then download it, if it does
+   * exist but is out of date then download it, otherwise no need to download file.
+   *
+   * @param fileIdentifier - id of file to sync
+   * @param connection - connection (to primary) to use for syncing file
+   * @param ticket - ticket to accompany requests with primary
+   * @param sessionKey - key to use to encrypt any communication with primary
+   */
   def syncFile(fileIdentifier: String, connection: Connection, ticket: String, sessionKey: String): Unit = {
     if(!FileHandler.doesFileExist(fileIdentifier)) {
       loadCopyOfFileFromPrimary(fileIdentifier, connection, ticket,sessionKey)
@@ -50,25 +79,13 @@ object SyncHandler {
     }
   }
 
-  private def getToken(node: NodeAddress, serverUtility: ChatServerUtility): Array[String] = {
-    try {
-      val authServer = serverUtility.getAuthenticationServer
-      val asCon = new Connection(0, new Socket(authServer.getIP, Integer.parseInt(authServer.getPort)))
-      val logonMessage = Encryptor.createLogonMessage(node, serverUtility)
-      asCon.sendMessage(logonMessage)
 
-      val dataLine = asCon.nextLine().split(":")(1).trim
-      val ticketLine = asCon.nextLine() //don't care, we initiated connection so no ticket
-
-      val decrypedToken = new String(Encryptor.decrypt(dataLine, serverUtility.getPassword), "UTF-8")
-      decrypedToken.split("\n")
-    } catch {
-      case e: Exception => {
-        null
-      }
-    }
-  }
-
+  /**
+   * Decrypts an encrypted message that was received
+   * @param encryptedMessage - message to decrypted
+   * @param key - key to use for decryption
+   * @return decrypted message
+   */
   def decryptMessage(encryptedMessage: String, key: String): Array[String] = {
     try {
       val decryptedMessage = Encryptor.decrypt(encryptedMessage, key)
@@ -81,8 +98,15 @@ object SyncHandler {
     }
   }
 
-  def syncWithPrimary(primary: NodeAddress, serverUtility: ChatServerUtility): Unit = {
-    val token = getToken(primary, serverUtility)
+
+  /**
+   * Sync current node with the specified primary
+   *
+   * @param primary - primary to sync with
+   * @param serverUtility - for access to credentials and other info
+   */
+  def syncWithPrimary(primary: NodeAddress, serverUtility: ServerUtility): Unit = {
+    val token = serverUtility.getToken(primary)
     if(token != null) {
       val ticket = token(0).split(":")(1).trim
       val sessionKey = token(1).split(":")(1).trim

@@ -2,6 +2,8 @@ import java.io.{BufferedOutputStream, FileOutputStream, ByteArrayOutputStream, P
 import java.net.{InetAddress, Socket}
 import java.nio.charset.{CharsetDecoder, Charset, CodingErrorAction}
 
+import ServerMessages._
+
 import scala.collection.mutable.ListBuffer
 import scala.io.BufferedSource
 
@@ -10,11 +12,19 @@ import scala.io.BufferedSource
  * Created by Ross on 12/12/15.
  */
 class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: String, directoryPort: Int, username: String, password: String) {
-  val contents: ListBuffer[Byte] = ListBuffer()
+  var contents: Array[Byte] = Array[Byte]()
   val authAddress = new NodeAddress(authIP, authPort.toString)
   val directoryAddress = new NodeAddress(directoryIP, directoryPort.toString)
 
 
+  /**
+   * Parses the response from an authentication server and returns a ServerMessages.TokenMessage
+   * which contains all relevant information for secure message transfer with the
+   * requested node
+   *
+   * @param response - response received from authentication server (decrypted)
+   * @return ServerMessages.TokenMessage containing details for secure communication with requested node
+   */
   private def parseTokenFromAuthenticationServerResponse(response: String): TokenMessage = {
     try {
       val token = response.split("\n")
@@ -34,6 +44,13 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
   }
 
 
+  /**
+   * Contacts the authentication server to obtain a ticket from communication with the specified
+   * node.
+   *
+   * @param node - node to request ticket for
+   * @return ServerMessages.TokenMessage containing all relevant information for secure communication
+   */
   private def getTicketForNodeFromAuthServer(node: NodeAddress): TokenMessage = {
     try {
       //contact authentication server and send logon message for specified server
@@ -58,6 +75,13 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
   }
 
 
+  /**
+   * Parses the response from the directory server to obtain all the information necessary to
+   * contact the file server specified by the directory server and perform file actions.
+   *
+   * @param response - response received from directory server (decrypted)
+   * @return ServerMessages.LookupResultMessage containing all relevant info to contact file node with file
+   */
   private def parseLookupResultMessageFromDirectoryServerResponse(response: String): LookupResultMessage = {
     try {
       val messageLines = response.split("\n")
@@ -75,13 +99,22 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
   }
 
 
-  private def lookupFileAddressFromDirectory(ticket: String, sessionKey: String, forWrite: Boolean): LookupResultMessage= {
+  /**
+   * Contacts the directory server and performs a file lookup for the specified file.
+   *
+   * @param ticket - ticket recieved from authentication server for communication with Directory server
+   * @param sessionKey - session key recieved from authentication server for communication with Directory server
+   * @param forReading - whether the file is to be read or written to (this affects the node the DS returns)
+   * @return ServerMessages.LookupResultMessage containing all relevant info to contaict file node with file
+   */
+  private def lookupFileAddressFromDirectory(ticket: String, sessionKey: String, forReading: Boolean): LookupResultMessage= {
     try {
       val dirCon = new Connection(0, new Socket(directoryAddress.getIP, Integer.parseInt(directoryAddress.getPort)))
 
-      val lookupMessage = new LookupMessage(path, forWrite)
+      val lookupMessage = new LookupMessage(path, forReading)
       val encLookupMessage = Encryptor.encryptMessage(lookupMessage, ticket, sessionKey)
       dirCon.sendMessage(encLookupMessage)
+      println("got here 0")
 
       val dataLine = dirCon.nextLine().split(":")(1).trim
       val ticketLine = dirCon.nextLine()
@@ -98,6 +131,13 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
   }
 
 
+  /**
+   * Parses the reading file message received from a file node and returns a ServerMessages.ReadingFileMessage
+   * containing the id and length of the file.
+   *
+   * @param response - response received from file node
+   * @return ServerMessages.ReadingFileMessage containing info relevant to file operations (id and length)
+   */
   private def parseReadingFileMessageFromServerResponse(response: String): ReadingFileMessage = {
     try {
       val readingFile = response.split("\n")
@@ -114,169 +154,165 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
   }
 
 
-  private def downloadFile(): Unit = {
+  /**
+   * Attempts to download the file at the specified path (AFS) by communicating with the
+   * authentication server, directory server, and if file present a file server.
+   *
+   * @return - true if download of file was possible (file exists), false otherwise
+   */
+  private def downloadFile(): Boolean = {
     try {
       val tokenForDir = getTicketForNodeFromAuthServer(directoryAddress)
-      val lookupResult = lookupFileAddressFromDirectory(tokenForDir.getTicket, tokenForDir.getSessionKey, false)
+      val readFile = true
+      val lookupResult = lookupFileAddressFromDirectory(tokenForDir.getTicket, tokenForDir.getSessionKey, readFile)
 
-      val fileNodeAddress = new NodeAddress(lookupResult.getIP, lookupResult.getPort)
-      val tokenForFileNode = getTicketForNodeFromAuthServer(fileNodeAddress)
+      if(lookupResult != null) {
+        val fileNodeAddress = new NodeAddress(lookupResult.getIP, lookupResult.getPort)
+        val tokenForFileNode = getTicketForNodeFromAuthServer(fileNodeAddress)
 
-      val nodeCon = new Connection(0, new Socket(fileNodeAddress.getIP, Integer.parseInt(fileNodeAddress.getPort)))
-      val fileRequestMessage = Encryptor.encryptMessage(new RequestReadFileMessage(lookupResult.getID), tokenForFileNode.getTicket, tokenForFileNode.getSessionKey)
-      nodeCon.sendMessage(fileRequestMessage)
+        val nodeCon = new Connection(0, new Socket(fileNodeAddress.getIP, Integer.parseInt(fileNodeAddress.getPort)))
+        val fileRequestMessage = Encryptor.encryptMessage(new RequestReadFileMessage(lookupResult.getID), tokenForFileNode.getTicket, tokenForFileNode.getSessionKey)
+        nodeCon.sendMessage(fileRequestMessage)
 
-      //receive response from authentication server
-      val dataLine = nodeCon.nextLine().split(":")(1).trim
-      val ticketLine = nodeCon.nextLine() //don't care, we initiated connection so no ticket
+        //receive response from authentication server
+        val dataLine = nodeCon.nextLine().split(":")(1).trim
+        val ticketLine = nodeCon.nextLine() //don't care, we initiated connection so no ticket
 
-      val message = new String(Encryptor.decrypt(dataLine, tokenForFileNode.getSessionKey), "UTF-8")
-      val length = parseReadingFileMessageFromServerResponse(message).getLength
+        val message = new String(Encryptor.decrypt(dataLine, tokenForFileNode.getSessionKey), "UTF-8")
+        val length = parseReadingFileMessageFromServerResponse(message).getLength
 
-      var count = length
-      val baos = new ByteArrayOutputStream()
+        var count = length
+        val baos = new ByteArrayOutputStream()
 
-      while(count > 0) {
-        baos.write(nodeCon.readByte())
-        count -= 1
-      }
-      nodeCon.close()
+        //write encrypted bytes to baos
+        while(count > 0) {
+          baos.write(nodeCon.readByte())
+          count -= 1
+        }
+        nodeCon.close()
 
-      val encryptedFile = baos.toString("UTF-8")
-      val decryptedFile = Encryptor.decrypt(encryptedFile, tokenForFileNode.getSessionKey)
+        //decrypt and store decrypted bytes of file locally
+        val encryptedFile = baos.toString("UTF-8")
+        val decryptedFile = Encryptor.decrypt(encryptedFile, tokenForFileNode.getSessionKey)
 
-      for (f <- decryptedFile) {
-        contents += f
+        contents = Array.ofDim[Byte](decryptedFile.length)
+        for(i <- 0 to decryptedFile.length - 1) {
+          contents(i) = decryptedFile(i)
+        }
+
+        return true
+      } else {
+        return false
       }
     } catch {
       case e: Exception => {
-        null
+        return false
       }
     }
   }
 
 
-
-
-
-
-  /*
-  * val authCon = new Connection(2, new Socket(InetAddress.getByName("localhost"),8000))
-    val token = ServerMessageHandler.getTokenForServer(authCon, new NodeAddress("localhost", 8100.toString), "rcasey", "12345678")
-
-    if(token != null) {
-      println("got token")
-      val ticket = token(0).split(":")(1).trim
-      val sessionKey = token(1).split(":")(1).trim
-
-      val dirCon = new Connection(3, new Socket(InetAddress.getByName("localhost"), 8100))
-
-      val lookupMessage = new LookupMessage("testFile.txt", false)
-      val encLookupMessage = Encryptor.encryptMessage(lookupMessage, ticket, sessionKey)
-      dirCon.sendMessage(encLookupMessage)
-
-      val dataLine = dirCon.nextLine().split(":")(1).trim
-      val ticketLine = dirCon.nextLine()
-      println("got stuff from dir server")
-
-
-      val message = new String(Encryptor.decrypt(dataLine, sessionKey), "UTF-8")
-      val messageLines = message.split("\n")
-
-      val fileID = messageLines(0).split(":")(1).trim
-      val ipAddress = messageLines(1).split(":")(1).trim
-      val port = messageLines(2).split(":")(1).trim
-
-      val priCon = new Connection(4, new Socket(InetAddress.getByName(ipAddress), Integer.parseInt(port)))
-
-
-      val encryptedFile = Encryptor.encrypt(Files.readAllBytes(Paths.get("./testFile.txt")), sessionKey)
-      val encryptedMeesage = Encryptor.encryptMessage(new WriteFileMessage(fileID, encryptedFile.length), ticket, sessionKey)
-      priCon.sendMessage(encryptedMeesage)
-      priCon.sendBytes(encryptedFile.getBytes)
-      println("send encrypted bytes")
-  * */
-
-  /*
-  private def downloadFile(node: NodeAddress): Unit = {
-    lazy val socket = new Socket(InetAddress.getByName(node.getIP), Integer.parseInt(node.getPort))
-    val connection = new Connection(0, socket)
-
-    var count = ServerMessageHandler.requestFile(connection, path)
-    val baos = new ByteArrayOutputStream()
-
-    while (count != 0) {
-      baos.write(connection.readByte())
-      count -= 1
-    }
-
-    for (f <- baos.toByteArray) {
-      contents += f
-    }
-    socket.close()
-  }
-  */
-
-
-  private def initialiseFile(): Unit = {
-    //contact directory server -> check if file exists
-    //if file exists:
-    val directoryIP = "localhost"
-    val directoryPort = 8000
-
-
-    val connection = new Connection(0, new Socket(InetAddress.getByName(directoryIP), directoryPort))
-    val dict = ServerMessageHandler.getNode(connection, path, true)
-
-    if(!dict.contains("error")) {
-      val nodeAddress = dict("address").asInstanceOf[NodeAddress]
-      //downloadFile(nodeAddress)
-    } else {
-      //init a blank file
-    }
-  }
-
-
+  /**
+   * A replacement for the standard file open operation. Rather than attempting to get the
+   * file bytes from the disk (as is the case in a normal file API) it attempts to download
+   * the file from the distributed file server. If this is not possible (because the file specified
+   * does not exist) the file is initialised locally.
+   */
   def open():Unit = {
-    //initialiseFile()
-    downloadFile()
-    println(contents.length)
+    //try to download file
+    if(!downloadFile()) {
+      println("file does not exist in file system, initing blank file locally")
+    }
   }
 
 
+  /**
+   * Uploads the contents of the locally cached file to a primary node specified by the
+   * directory server.
+   */
   def close(): Unit = {
-    var asByteArray = contents.toArray
+    println("Starting file close")
+    try {
+      val tokenForDir = getTicketForNodeFromAuthServer(directoryAddress)
+      val readFile = false
+      val lookupResult = lookupFileAddressFromDirectory(tokenForDir.getTicket, tokenForDir.getSessionKey, readFile)
 
-    lazy val socket = new Socket(InetAddress.getByName("localhost"),8004)
-    val connection = new Connection(0, socket)
+      //don't need to check as lookup result for a write will never fail (otherwise how could new files be added)
+      val fileNodeAddress = new NodeAddress(lookupResult.getIP, lookupResult.getPort)
+      val tokenForFileNode = getTicketForNodeFromAuthServer(fileNodeAddress)
 
-    ServerMessageHandler.sendUploadRequest(connection, "testFile2.png", asByteArray.length)
-    connection.sendBytes(asByteArray)
-    socket.close()
+      //connect to primary specified by directory server
+      val nodeCon = new Connection(0, new Socket(fileNodeAddress.getIP, Integer.parseInt(fileNodeAddress.getPort)))
+
+      //upload encrypted file to primary
+      val encryptedFile = Encryptor.encrypt(contents.toArray, tokenForFileNode.getSessionKey)
+      val encryptedMeesage = Encryptor.encryptMessage(new WriteFileMessage(lookupResult.getID, encryptedFile.length),tokenForFileNode.getTicket , tokenForFileNode.getSessionKey)
+      nodeCon.sendMessage(encryptedMeesage)
+      nodeCon.sendBytes(encryptedFile.getBytes)
+      println("Encrypted file uploaded")
+
+    } catch {
+      case e: Exception => {
+        //
+      }
+    }
+
   }
 
 
-  def read(startPosition: Int, length: Int): Unit = {
-    //TO-DO
-
-
-    /*
+  /**
+   * Reads the specified part of the file and returns the bytes that it contains.
+   * @param startPosition - index into byte array where read operation starts
+   * @param length - how many bytes to read
+   * @return Array[Byte] containing the bytes read from the file
+   */
+  def read(startPosition: Int, length: Int): Array[Byte] = {
     val readArray = Array.ofDim[Byte](length)
 
     for( i <- 0 to length) {
       readArray(i) = contents(i + startPosition)
     }
     readArray
+  }
+
+
+  /**
+    * Writes the passed data to the specified portion of the file, increasing the
+    * length of the file if necessary.
+    * @param startPosition - index into byte array where write should start
+    * @param length - how many bytes to write
+    * @param data - the bytes to write
     */
+  def write(startPosition: Int, length: Int, data: Array[Byte]): Unit = {
+    println("Beginning write")
+    if(startPosition + length < contents.length) {
+      for(i <- 0 to length) {
+        contents(i + startPosition) = data(i)
+      }
+    } else {
+      //contents array is not long enough so we need to extend it before we write
+      val newEndPosition = startPosition + length
+      val extraBytesNeeded = newEndPosition - contents.length
 
+      var newContents = Array.ofDim[Byte](newEndPosition)
+      for(i <- 0 to contents.length - 1) {
+        newContents(i) = contents(i)
+      }
+
+      //now have enough space for write
+      println("Writing new bytes")
+      for(i <- 0 to length - 1) {
+        newContents(i + startPosition) = data(i)
+      }
+      contents = newContents
+    }
+    println("Finished write")
   }
 
 
-  def write(): Unit = {
-    //TO-DO
-  }
-
-
+  /**
+   * Prints the contents of the file to console
+   */
   def printContents(): Unit = {
     for(byte <- contents) {
       println(byte)

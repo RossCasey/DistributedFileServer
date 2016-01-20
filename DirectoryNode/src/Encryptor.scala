@@ -61,11 +61,12 @@ object Encryptor {
 
 
   def encryptMessage(message: ServerMessage, ticket: String, key: String): ServerMessage = {
+    println("Encrypting: " + message.toString)
     val encryptedMessage = encrypt(message.toString.getBytes("UTF-8"), key)
     new EncryptedMessage(encryptedMessage, ticket)
   }
 
-  def createLogonMessage(nodeAddress: NodeAddress, serverUtility: ChatServerUtility): ServerMessage = {
+  def createLogonMessage(nodeAddress: NodeAddress, serverUtility: ServerUtility): ServerMessage = {
     val username = serverUtility.getUsername
     val password = serverUtility.getPassword
 

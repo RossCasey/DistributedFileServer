@@ -45,7 +45,7 @@ class NodeTable {
 
 
 
-  private def pingServer(ip: String, port: String, serverUtility: ChatServerUtility): Boolean = {
+  private def pingServer(ip: String, port: String, serverUtility: ServerUtility): Boolean = {
     try {
       val authNode = serverUtility.getAuthenticationServer
       val authCon = new Connection(0, new Socket(authNode.getIP, Integer.parseInt(authNode.getPort)))
@@ -114,7 +114,7 @@ class NodeTable {
   }
 
 
-  def getReadableNode(id: String, serverUtility: ChatServerUtility): NodeTableEntry = {
+  def getReadableNode(id: String, serverUtility: ServerUtility): NodeTableEntry = {
     //get all nodes with the correct id
     var nodes = ListBuffer[NodeTableEntry]()
     for(entry <- entries) {

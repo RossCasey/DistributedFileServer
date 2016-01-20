@@ -3,7 +3,7 @@ import java.net.SocketException
 /**
  * Created by Ross on 11/11/15.
  */
-class ConnectionInputListener(connection: Connection, serverUtility: ChatServerUtility) extends Runnable {
+class ConnectionInputListener(connection: Connection, serverUtility: ServerUtility) extends Runnable {
 
   override def run(): Unit = {
     val messageHandler = new MessageHandler(connection, serverUtility)

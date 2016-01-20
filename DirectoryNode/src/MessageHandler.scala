@@ -1,7 +1,7 @@
 /**
  * Created by Ross on 10/11/15.
  */
-class MessageHandler(connection: Connection, serverUtility: ChatServerUtility) {
+class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
 
   //enum of message types
   private object MessageType extends Enumeration {

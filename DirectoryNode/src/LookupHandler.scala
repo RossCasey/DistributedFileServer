@@ -6,7 +6,7 @@ import java.net.{InetAddress, Socket}
 object LookupHandler {
   var lookupTable = new LookupTable()
   var nodeTable = new NodeTable()
-  var serverUtility: ChatServerUtility = null
+  var serverUtility: ServerUtility = null
 
 
 
