@@ -7,14 +7,15 @@ import java.net._
 import java.io._
 import java.nio.file.{Paths, Files}
 import scala.io._
+import scala.util.Random
 
 object TestClient {
 
 
 
   def main(args: Array[String]) {
-
-    val fileName = "test5.txt"
+    /*
+    val fileName = "test6.txt"
 
     //file that does not exist being added to system
     val distFile = new DistributedFile(fileName, "localhost", 10000, "localhost", 10100, "rcasey", "12345678")
@@ -24,6 +25,22 @@ object TestClient {
     //distFile.write(0, otherFile.length, otherFile)
 
     //distFile.close()
+    */
+
+
+    for(i <- 0 to 10000) {
+      val rand = Random.nextInt(6) + 1
+      val fileToRequest = "test" + rand.toString + ".txt"
+
+      val dist = new DistributedFile(fileToRequest, "localhost", 10000, "localhost", 10100, "rcasey", "12345678")
+      dist.open()
+      println(i)
+      if(i % 5 == 0) {
+        dist.close()
+      }
+    }
+    println("Test over")
+
   }
 
 

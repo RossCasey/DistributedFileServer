@@ -23,8 +23,8 @@ class ConnectionInputListener(connection: Connection, serverUtility: ServerUtili
       }
       println("Socket closing for " + connection.getId)
     } catch {
-      case e: SocketException => {
-        println("Socket closing due to error for " + connection.getId)
+      case e: Exception => {
+        println("Socket closing for " + connection.getId)
       }
     }
   }

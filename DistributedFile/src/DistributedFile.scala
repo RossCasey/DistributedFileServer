@@ -272,12 +272,12 @@ class DistributedFile(path: String, authIP: String, authPort: Int, directoryIP: 
 
 
   /**
-    * Writes the passed data to the specified portion of the file, increasing the
-    * length of the file if necessary.
-    * @param startPosition - index into byte array where write should start
-    * @param length - how many bytes to write
-    * @param data - the bytes to write
-    */
+   * Writes the passed data to the specified portion of the file, increasing the
+   * length of the file if necessary.
+   * @param startPosition - index into byte array where write should start
+   * @param length - how many bytes to write
+   * @param data - the bytes to write
+   */
   def write(startPosition: Int, length: Int, data: Array[Byte]): Unit = {
     println("Beginning write")
     if(startPosition + length < contents.length) {

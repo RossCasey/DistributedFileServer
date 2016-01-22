@@ -18,13 +18,13 @@ class ConnectionInputListener(connection: Connection, serverUtility: ServerUtili
           messageHandler.handleMessage()
           println("Finished handling new message on: " + connection.getId)
         }
+
         Thread.sleep(50)
       }
       println("Socket closing for " + connection.getId)
     } catch {
-      case e: java.io.IOException => {}
       case e: Exception => {
-        e.printStackTrace()
+        println("Socket closing for " + connection.getId)
       }
     }
   }

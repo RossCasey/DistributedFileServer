@@ -142,6 +142,7 @@ class MessageHandler(connection: Connection, serverUtility: ServerUtility) {
         case MessageType.Error => handleUnknownPacket(message)
       }
     }
+    connection.close()
   }
 
 
